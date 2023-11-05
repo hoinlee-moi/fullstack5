@@ -1,8 +1,4 @@
-const range = (start, end, item = 1) => {
-  let startNum = end===undefined? start<=0?start:1:start
-  let endNum = end===undefined? start<0?-1:start:end
-  console.log(startNum,endNum,item)
-};
+import { range } from "../utils/array-utils.js";
 
 /* 
 3개의 매개변수가 있다면 시작, 끝 , 계산값

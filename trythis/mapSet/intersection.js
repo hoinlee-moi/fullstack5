@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from 'assert'
 
 //다음과 같은 집합 A, B, C가 있을 때,
 //각 집합의 교집합, 차집합, 합집합을 구하는 함수를 작성하시오.
