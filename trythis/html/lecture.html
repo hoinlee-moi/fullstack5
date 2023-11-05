@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture</title>
+  </head>
+  <body>
+    <div>
+      <button id="button1">Button</button>
+      <span id="a"></span>
+    </div>
+    <button id="button2">Button</button>
+    <span id="b"></span>
+    <script>
+      let cnt = 0;
+      window.addEventListener("load", (event) => {
+        const spanA = document.getElementById("a");
+        const spanB = document.getElementById("b");
+        document
+          .getElementById("button1")
+          .addEventListener("click", function (event) {
+            cnt += 1;
+            spanA.innerText = cnt;
+          });
+        document
+          .getElementById("button2")
+          .addEventListener("click", function (event) {
+            cnt += 1;
+            spanB.innerText = cnt;
+          });
+      });
+    </script>
+  </body>
+</html>
