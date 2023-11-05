@@ -13,13 +13,15 @@ assert.strictEqual(
 
 //전화번호를 정확한 형식으로 출력하는 함수를 작성하시오.
 const telfmt = (phoneNumStr) => {
-  if (phoneNumStr.slice(0, 2) === "02" && phoneNumStr.length < 11) {
+  if (phoneNumStr.slice(0, 2) === "02") {
     return phoneNumStr.length < 10
-      ? phoneNumStr.replace(/(\d{2})(\d{3})/g, "$1-$2-")
-      : phoneNumStr.replace(/(\d{2})(\d{4})/g, "$1-$2-");
+      ? phoneNumStr.replace(/(\d{2})(\d{3})/, "$1-$2-")
+      : phoneNumStr.replace(/(\d{2})(\d{4})/, "$1-$2-");
   }
-  if (phoneNumStr.length === 8) {
-    return phoneNumStr.replace(/(\d{4})/, "$1-");
+  if (phoneNumStr.length < 9) {
+    return phoneNumStr.length < 5
+      ? phoneNumStr
+      : phoneNumStr.replace(/(\d{4})/, "$1-");
   }
   return phoneNumStr.length < 11
     ? phoneNumStr.replace(/(\d{3})(\d{3})/, "$1-$2-")
