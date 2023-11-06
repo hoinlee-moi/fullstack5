@@ -34,7 +34,10 @@ const kim = {
   zws: new WeakSet([arr, hong]),
   zm: new Map([[hong, arr]]),
   zwm: new WeakMap([[hong, arr]]),
-};
+}
+const json = JSON.stringify(kim)
+const toData = JSON.parse(json)
+console.log(json,toData)
 
 // const deepCopy = (obj) => {
 //   if (
@@ -68,7 +71,7 @@ const copyKim = deepCopy(kim);
 arr[1] = 100;
 kim.arr[1] = 200;
 kim.oo.id = 300;
-console.log(kim, "\n------\n", copyKim);
+// console.log(kim, "\n------\n", copyKim);
 
 // const newKim = deepCopy(kim);
 
