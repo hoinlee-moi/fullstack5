@@ -1,9 +1,16 @@
-import { randTime } from "./randTimePromise.js";
+// import { randTime } from "./randTimePromise.js";
+
+const randTime = (val) =>
+  new Promise((resolve) => {
+    const randT = Math.random() * 1000;
+    console.log("randTime>>>", val, randT);
+    setTimeout(resolve, randT, val);
+  });
 
 const p = new Promise((resolve, reject) => {
   setTimeout(() => {
     const now = Date.now();
-    if (now % 2 === 0) resolve(console.log("fulfill", now));
+    if (now % 2 >= 0) resolve(console.log("fulfill", now));
     else reject(new Error("어디로?"));
   }, 1000);
 });
@@ -30,29 +37,31 @@ p.then((res) => {
 
 function Promise(cb) {
   this.state = "Pending";
-  let thenFn;
+  let thenFn = [];
   let catchFn;
+  let finallyFn = [];
   Promise.prototype.then = (onFullfill) => {
-    thenFn = onFullfill;
-
+    thenFn.push(onFullfill);
     return this;
-    // this.finally()
   };
   Promise.prototype.catch = (onReject) => {
-    this.state = "rejected";
-    catchFn = onReject;
-    console.error("Error>>", onReject());
+    if (!catchFn) catchFn = onReject;
     return this;
-    // this.finally()
   };
   Promise.prototype.resolve = (res) => {
-    
-    this.then(() => res)
+    this.state = "resolve";
+    const fn = thenFn.shift();
+    if (fn) fn(res);
   };
-  Promise.prototype.reject = (err) => this.catch(() => err);
+  Promise.prototype.reject = (err) => {
+    this.state = "reject";
+    catchFn(err);
+  };
   Promise.prototype.finally = (callback) => {
-    if (cb !== undefined) callback();
+    if (cb !== undefined && thenFn.length === 0 && catchFn.length === 0)
+      callback();
     this.state = "setteled";
+    return this;
   };
 
   cb(this.resolve, this.reject);
