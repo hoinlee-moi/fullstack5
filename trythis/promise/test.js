@@ -1,18 +1,15 @@
-let r = true;
-setTimeout(() => {
-  console.log("end");
-  r = false;
-}, 100);
-setTimeout(()=>{
-    console.log(r)
-},1000)
-// while (r) {
-//   console.log(r);
-// }
+// const randTime = (val) =>
+//   new Promise((resolve) => {
+//     const randT = Math.random() * 1000;
+//     console.log("randTime>>>", val, randT);
+//     setTimeout(resolve, randT, val);
+//   });
 
-function* ff(){
-    for(let i=0; i<5; i+=1){
-        yield console.log('안녕',ff.next())
-    }
+// randTime(1).then(res=>console.log(randTime(1)))
+// console.log(randTime)
+
+try {
+    setTimeout(()=>{})
+} catch (error) {
+    
 } 
-ff()

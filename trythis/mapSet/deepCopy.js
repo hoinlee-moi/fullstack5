@@ -35,9 +35,7 @@ const kim = {
   zm: new Map([[hong, arr]]),
   zwm: new WeakMap([[hong, arr]]),
 }
-const json = JSON.stringify(kim)
-const toData = JSON.parse(json)
-console.log(json,toData)
+console.log(kim)
 
 // const deepCopy = (obj) => {
 //   if (

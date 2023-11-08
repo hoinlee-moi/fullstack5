@@ -15,6 +15,7 @@ promiseFn(1)
   .then((res) => {
     console.log("res2>>", res); // undefined
     if (res === undefined) return Promise.reject(new Error("No valid resolve"));
+    // if (res === undefined) throw new Error("No valid resolve");
     return promiseFn(res ?? 3);
   })
   .catch((err) => console.log("Error!!>>", err));
