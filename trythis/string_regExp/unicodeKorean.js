@@ -32,7 +32,7 @@ const isEndNumJaum = (number) => {
   const numberGater = [0, 1, 3, 6, 7, 8, 9];
   return !!numberGater.find((gaterNum) => gaterNum === number);
 };
-
+console.log(String.fromCharCode())
 const isEndJaum = (str) => {
   const lastWord = str.at(-1);
   const lastWordUni = lastWord.charCodeAt();
@@ -63,7 +63,10 @@ assert.equal(isEndJaum("24"), false);
 assert.equal(isEndJaum("23"), true);
 
 //조사 '이/가, 을/를, 은/는'를 알아서 붙이는 함수를 작성하시오.
-
+const josa = (str,jo_sa)=> {
+  const [jo,sa] = jo_sa("/")
+  return isEndJaum(str)?`${str}${jo}`:`${str}${sa}`
+}
 const iga = (str) => {
   const lastWordUni = str.at(-1).charCodeAt();
   if (isEndKorJaum(lastWordUni)) return "이";

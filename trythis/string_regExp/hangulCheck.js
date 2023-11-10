@@ -4,7 +4,7 @@ const hasHangul = (str) => /[ㄱ-ㅎㅏ-ㅣ가-힣]/g.test(str);
 
 const isHangul = (str) => !(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/.test(str));
 
-const isHangulV2 = (str) => str.match(/[ㄱ-힣\s]/g).length === str.length;
+const isHangulV2 = (str) => str.match(/[ㄱ-ㅎㅏ-ㅣ가-힣\s]/g).length === str.length;
 
 
 assert.deepEqual(hasHangul("강원도"), true);

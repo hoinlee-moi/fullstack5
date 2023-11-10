@@ -30,14 +30,16 @@ assert.strictEqual(
 
 const telfmt = (phoneNumStr) => {
   const len = phoneNumStr?.length ?? 0;
-  if (phoneNumStr.substring(0, 2) === "02") {
-    return phoneNumStr.replace(/(\d{2})(\d{3,4})(\d{4})/, "$1-$2-$3");
-  }
   if (len < 9) {
     return len < 5
       ? phoneNumStr
       : phoneNumStr.replace(/(\d{3,4})(\d{4})/, "$1-$2");
   }
+
+  if (phoneNumStr.substring(0, 2) === "02") {
+    return phoneNumStr.replace(/(\d{2})(\d{3,4})(\d{4})/, "$1-$2-$3");
+  }
+
   return len < 12
     ? phoneNumStr.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3")
     : phoneNumStr.replace(/(\d{4})(\d{4})/, "$1-$2-");
