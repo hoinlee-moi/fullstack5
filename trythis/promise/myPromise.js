@@ -1,7 +1,7 @@
 // import { randTime } from "./randTimePromise.js";
 
 const randTime = (val) =>
-  new Promise((resolve) => {
+  new Promise((resolve,reject) => {
     const randT = Math.random() * 1000;
     console.log("randTime>>>", val, randT);
     setTimeout(resolve, randT, val);
@@ -10,72 +10,88 @@ const randTime = (val) =>
 const p = new Promise((resolve, reject) => {
   setTimeout(() => {
     const now = Date.now();
-    if (now % 2 < 0) resolve(console.log("fulfill", now));
+    if (now % 2 >= 0) resolve(console.log("fulfill", now));
     else reject(new Error("어디로?"));
   }, 1000);
 });
 
-console.log("111>>", p);
-setTimeout(() => console.log("222>>", p), 2000);
-setTimeout(() => console.log("3>>", p), 4000);
+// console.log("111>>", p);
+// setTimeout(() => console.log("222>>", p), 2000);
+// setTimeout(() => console.log("3>>", p), 4000);
 
-// p.then((res) => {
-//   console.log("p.then.res11>>>", res);
-//   return randTime(1);
-// })
-//   .then((res) => randTime(2))
-//   .then((res) => {
-//     console.log("p.then.res22>>>", res);
-//     return "FiNALLY";
-//   })
-//   .then(console.log("p.then.res33!!!"))
-//   .then((res) => console.log("TTT"))
-//   .catch((err) => console.error("err-11>>", err))
-//   .catch((err) => console.error("err-22>>", err))
-//   .finally(() => console.log("finally-11"))
-//   .finally(() => console.log("finally-22"));
+p.then((res) => {
+  console.log("p.then.res11>>>", res);
+  return randTime(1);
+})
+  .then((res) => {
+    console.log("res!!!!!!", res);
+    return randTime(2);
+  })
+  .then((res) => {
+    console.log("p.then.res22>>>", res);
+    return "FiNALLY";
+  })
+  .then(console.log("p.then.res33!!!"))
+  .then((res) => res || "TTT")
+  .then(console.log)
+  .catch((err) => {
+    console.error("err-11>>", err);
+    throw new Error("error2 실행됨??!");
+  })
+  .catch((err) => console.error("err-22>>", err))
+  .finally(() => console.log("finally-11"))
+  .finally(() => console.log("finally-22"));
 
 function Promise(cb) {
   this.state = "Pending";
   const thenFn = [];
   const finalFn = [];
-  let catchFn;
+  const catchFn = [];
   Promise.prototype.then = (...onFullfill) => {
     thenFn.push(...onFullfill);
     return this;
   };
-  Promise.prototype.catch = (onReject) => {
-    if (!catchFn) catchFn = onReject;
+  Promise.prototype.catch = (...onReject) => {
+    catchFn.push(...onReject);
     return this;
   };
   Promise.prototype.resolve = (res) => {
+    if (!thenFn.length) return this.final();
     this.state = "resolve";
     const fn = thenFn.shift();
-    if (fn) {
-      const result = fn(res);
-      if (result instanceof Promise)
-        return result.then(...thenFn).finally(...finalFn);
-      else return this.resolve(result);
+    let result;
+    try {
+      result = typeof fn === "function" ? fn(res) : fn;
+    } catch (error) {
+      this.reject(error);
     }
-    if (thenFn.length === 0) return this.final();
 
-    this.resolve(fn);
+    if (result instanceof Promise)
+      return result
+        .then(...thenFn)
+        .catch(...catchFn)
+        .finally(...finalFn);
+
+    this.resolve(result);
   };
   Promise.prototype.reject = (err) => {
     this.state = "reject";
-    if (catchFn) catchFn(err);
-    if (finalFn) this.final();
+    const fn = catchFn.shift();
+    if (!fn) this.final();
+
+    try {
+      fn(err);
+      this.final();
+    } catch (error) {
+      this.reject(error);
+    }
   };
   Promise.prototype.finally = (...callback) => {
     finalFn.push(...callback);
     return this;
   };
   Promise.prototype.final = () => {
-    const finallyFn = finalFn.shift();
-    if (finallyFn) {
-      finallyFn();
-      this.final();
-    }
+    for (const fn of finalFn) fn();
   };
 
   cb(this.resolve, this.reject);
