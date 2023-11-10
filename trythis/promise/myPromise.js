@@ -1,7 +1,7 @@
 // import { randTime } from "./randTimePromise.js";
 
 const randTime = (val) =>
-  new Promise((resolve,reject) => {
+  new Promise((resolve, reject) => {
     const randT = Math.random() * 1000;
     console.log("randTime>>>", val, randT);
     setTimeout(resolve, randT, val);
@@ -10,7 +10,7 @@ const randTime = (val) =>
 const p = new Promise((resolve, reject) => {
   setTimeout(() => {
     const now = Date.now();
-    if (now % 2 >= 0) resolve(console.log("fulfill", now));
+    if (now % 2 >= 0) resolve(now);
     else reject(new Error("어디로?"));
   }, 1000);
 });
@@ -47,41 +47,46 @@ function Promise(cb) {
   const thenFn = [];
   const finalFn = [];
   const catchFn = [];
-  Promise.prototype.then = (...onFullfill) => {
-    thenFn.push(...onFullfill);
+  Promise.prototype.then = (onFullfill) => {
+    if (typeof onFullfill === "function") thenFn.push(onFullfill);
     return this;
   };
-  Promise.prototype.catch = (...onReject) => {
-    catchFn.push(...onReject);
+  Promise.prototype.catch = (onReject) => {
+    if (typeof onReject === "function") catchFn.push(onReject);
     return this;
   };
   Promise.prototype.resolve = (res) => {
-    if (!thenFn.length) return this.final();
-    this.state = "resolve";
+    resolveRecur(res);
+  };
+  const resolveRecur = (prevResult) => {
     const fn = thenFn.shift();
-    let result;
-    try {
-      result = typeof fn === "function" ? fn(res) : fn;
-    } catch (error) {
-      this.reject(error);
+    if (!fn) {
+      this.state = "fulfill";
+      return final();
     }
 
-    if (result instanceof Promise)
-      return result
-        .then(...thenFn)
-        .catch(...catchFn)
-        .finally(...finalFn);
-
-    this.resolve(result);
+    if (prevResult instanceof Promise) {
+      prevResult.then(fn).then(resolveRecur).catch(this.reject);
+    } else {
+      try {
+        const ret = fn(prevResult);
+        resolveRecur(ret);
+      } catch (error) {
+        this.reject(error);
+      }
+    }
   };
   Promise.prototype.reject = (err) => {
     this.state = "reject";
     const fn = catchFn.shift();
-    if (!fn) this.final();
+    if (!fn) {
+      final();
+      throw err;
+    }
 
     try {
       fn(err);
-      this.final();
+      final();
     } catch (error) {
       this.reject(error);
     }
@@ -90,7 +95,7 @@ function Promise(cb) {
     finalFn.push(...callback);
     return this;
   };
-  Promise.prototype.final = () => {
+  const final = () => {
     for (const fn of finalFn) fn();
   };
 
