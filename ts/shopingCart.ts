@@ -98,3 +98,5 @@ const total5 = SIZE5.reduce(
   (curr, size) => curr + cart5[size.id] * size.price,
   0
 );
+
+export{}
