@@ -1,6 +1,26 @@
 import { range } from "../utils/array-utils.js";
 import assert from "assert";
 
+/* util 폴더를 통해 module화 완료
+const range = (start, end, step) => {
+  if (start === end || step === 0) return [start];
+  if ((start > end && step > 0) || (start < end && step < 0)) return [];
+
+  const idxNum = end === undefined ? (start > 0 ? 1 : start) : start;
+  const endNum = end === undefined ? (start < 0 ? -1 : start) : end;
+  const stepNum = step === undefined ? (start > end ? -1 : 1) : step;
+
+  const arr = [
+    ...Array(Math.ceil((Math.abs(idxNum - endNum) + 1) / Math.abs(stepNum))),
+  ];
+  arr.reduce((acc, cur, i) => {
+    arr[i] = acc;
+    return acc + stepNum;
+  }, idxNum);
+  return arr;
+};
+*/
+
 assert.deepStrictEqual(range(0), [0]);
 assert.deepStrictEqual(range(0, 0), [0]);
 assert.deepStrictEqual(range(1, 10, 1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);

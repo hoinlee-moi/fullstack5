@@ -136,5 +136,5 @@ JS는 함수형 프로그래밍 언어로 가장 많이 보게될 실행 컨텍�
 - `[[ThisBindingStatus]]` : 값이 lexical이면 이 함수는 arraow function이며, local this를 갖지 않는다. lexical이 아니라면 uninitialized 상태였다가 `[[ThisValue]]`값이 set되면 initialized 상태로 변경된다
 - `[[OuterEnv]]` : Function Object의 `[[Environment]]` 내부 슬롯이 참조하는 값. 즉, <f.o>가 생성될 당시의 Lexical Scope
 
-[직접 그려본 실행컨텍스트]()
+[직접 그려본 실행컨텍스트](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/ExecutionContext/README(drawing_Execution_Context).md)
 

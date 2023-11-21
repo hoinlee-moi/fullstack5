@@ -1,7 +1,19 @@
-const range = (start, end, item = 1) => {
-  let startNum = end === undefined ? (start <= 0 ? start : 1) : start;
-  let endNum = end === undefined ? (start < 0 ? -1 : start) : end;
-  console.log(startNum, endNum, item);
+const range = (start, end, step) => {
+  if (start === end || step === 0) return [start];
+  if ((start > end && step > 0) || (start < end && step < 0)) return [];
+
+  const idxNum = end === undefined ? (start > 0 ? 1 : start) : start;
+  const endNum = end === undefined ? (start < 0 ? -1 : start) : end;
+  const stepNum = step === undefined ? (start > end ? -1 : 1) : step;
+
+  const arr = [
+    ...Array(Math.ceil((Math.abs(idxNum - endNum) + 1) / Math.abs(stepNum))),
+  ];
+  arr.reduce((acc, cur, i) => {
+    arr[i] = acc;
+    return acc + stepNum;
+  }, idxNum);
+  return arr;
 };
 Array.prototype.mapBy = function (prop) {
   return this.map((a) => a[prop]);
