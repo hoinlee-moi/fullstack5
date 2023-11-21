@@ -1,10 +1,15 @@
 const today = new Date();
 const dayIdx = today.getDay();
-printGetDay1(dayIdx)
-printGetDay2(dayIdx)
-printGetDay3(dayIdx)
+printGetDay1(dayIdx);
+printGetDay2(dayIdx);
+printGetDay3(dayIdx);
 
 // 스트링 사용하기
+
+function printGetDay0(day) {
+  const dayStr = "일월화수목금토";
+  console.log(`오늘은 ${dayStr[day]}요일 입니다`);
+}
 
 function printGetDay1(day) {
   const dayArr = [

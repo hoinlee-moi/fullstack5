@@ -1,3 +1,13 @@
+//anothor recursive
+const f = (n) => {
+  if (n < 2) return [0, 1];
+  return [...f(n - 1), f(n - 2)[n - 2] + f(n - 1)[n - 1]];
+};
+const tcoF = (n, acc = []) => {
+  if (n < 2) return [0, 1, ...acc];
+  return tcoF(n - 1, [tcoF(n - 1)[n - 1] + tcoF(n - 2)[n - 2], ...acc]);
+};
+
 // recursive
 const fibonachiRecursive = (n) => {
   if (n < 2) return [0, 1];
