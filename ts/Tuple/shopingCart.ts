@@ -1,3 +1,18 @@
+/* 방법*/
+const SIZE0 = [
+  { id: "X", price: 1000 },
+  { id: "Y", price: 2000 },
+  { id: "Z", price: 3000 },
+] as const;
+
+const cart0 = {
+  X: 1,
+  Y: 2,
+  Z: 3,
+};
+
+const total0 = SIZE0.reduce((curr, size) => curr + cart0[size.id] * size.price, 0);
+
 /*방법 1 */
 const SIZE = [
   { id: "X", price: 1000 },

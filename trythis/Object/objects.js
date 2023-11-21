@@ -14,11 +14,10 @@ const user = {
     return `${this.id}-${this.name}`;
   }, // OK! getInfo의 최종 <f.o>
 };
-// console.log(user);
+
 function entriesWithSymbol(obj) {
   return Reflect.ownKeys(obj);
 }
-// console.log(entriesWithSymbol());
 
 const obj = {
     name: 'ObjName',
