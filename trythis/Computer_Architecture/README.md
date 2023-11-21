@@ -142,7 +142,8 @@ JUMP같은건 PC가 다른 위치의 명령어를 실행하게 만든다
 
 <br>
 
-[ Compiler & OS 보러가기] ()
+[Compiler & OS보러가기](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/Computer_Architecture/README(compile).md)
+
 ### Reference
 [CPU의 기본구조](https://cs-ssupport.tistory.com/307)
 
