@@ -59,6 +59,9 @@ class Subway {
         ? targetLine.slice(strIdx).concat(targetLine.slice(0, endIdx + 1))
         : targetLine.slice(strIdx, endIdx + 1);
   }
+  [Symbol.iterator]() {
+    return this.line.values();
+  }
   // [Symbol.iterator]() {
   //   const selfLine = this.line;
   //   let idx = -1;
@@ -73,9 +76,19 @@ class Subway {
   //     },
   //   };
   // }
-  [Symbol.iterator]() {
-    return this.line.values();
-  }
+  // [Symbol.iterator]() {
+  //   return {
+  //     next: () => {
+  //       if (this.#isEnd) return { done: true };
+
+  //       if (this.#currIdx === LINE2.length) this.#currIdx = 0;
+  //       const value = LINE2[this.#currIdx++];
+  //       this.#isEnd = value === this.#end;
+
+  //       return { value, done: false };
+  //     },
+  //   };
+  // }
 }
 
 const routes = new Subway("문래", "신림", LINE2);
@@ -92,8 +105,3 @@ const route3 = new Subway("문래", "합정", LINE2);
 console.log([...route3]);
 const it2 = route3[Symbol.iterator]();
 console.log([...route3].length);
-// while (true) {
-//   const x = it2.next();
-//   console.log(x);
-//   if (x.done) break;
-// }

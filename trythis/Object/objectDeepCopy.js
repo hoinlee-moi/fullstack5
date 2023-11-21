@@ -7,31 +7,31 @@ class Dog {
   }
 }
 const lucy = new Dog("lusy");
-
 const user = {
-  null: null,
-  "": 1,
-  " ": 1, // 'id': 1, '0y': 2 모두 OK!
-  123: 1, // user[123], user['123'] OK, but user.123 is SyntaxError!!
-  12345: 2, // user[12345], user[12345n], user['12345'] OK, but user['12345n'] is undefined!
-  true: 1, // OK  user[true]  user.true
-  id: 2,
-  bigint: BigInt(123),
-  newNum: new Number(123),
-  newBool: new Boolean(true),
-  infini: Infinity,
+  nid: 3,
   addr: { city: "pusan", village: { name: "homeTown" }, arr: [1, 2, 3, 4] },
-  str: new String("aaa"),
-  [`name`]: "Hong", // But, `name`: 'Hong'은 SyntaxError: Unexpected template string!
-  [Symbol()]: "Hong", // OK But, Symbol(): 'Hong'은 SyntaxError: Unexpected token ':'
-  [`${new Date()}`]: 365, // OK! 'Sun Jul …': 365
-  symbol: Symbol("leeee"),
-  "my-friends": ["Han", "Kim"],
-  getInfo: () => `${this.id}-${this.name}`, // OK! But, this is not user!
-  getInfo2() {
-    return `${this.id}-${this.name}`;
-  }, // OK! getInfo의 최종 <f.o>
+  arr: [1, 2, 3, { aid: 1 }, [10, 20]],
+  oo: { id: 1, name: "Hong", addr: { city: "Seoul" } },
+  xx: null,
+  yy: (a) => {
+    return a;
+    this.addr;
+  },
+  yyy(x, y) {
+    return this.oo;
+  },
+  [Symbol()]: 9,
+  [Symbol()]: Symbol("symbol2"),
   dog: lucy,
+  sobj: new String("abc"),
+  nobj: new Number(123),
+  bobj: new Boolean(true),
+  [Symbol()]: Object(Symbol("symbol3")),
+
+  zs: new Set([arr, hong]),
+  zws: new WeakSet([arr, hong]),
+  zm: new Map([[hong, arr]]),
+  zwm: new WeakMap([[hong, arr]]),
 };
 
 function funcDeepCopy(obj) {

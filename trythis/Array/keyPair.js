@@ -32,12 +32,18 @@ const keyPairV2 = (arr, targetNum) => {
     }
   }
 };
-// const keyPairV2 = (arr, targetNum) => {
-//   for (let i = 0; i < arr.length; i += 1) {
-//     if (arr.find((v) => v === targetNum - arr[i]))
-//       return [i, arr.indexOf(targetNum - arr[i])];
-//   }
-// };
+const keyPairV3 = (arr, n) => {
+  // {yourValue: pair-idx}
+  const yourValueVsPairIdx = {}; // {6:0, 4:1}
+
+  for (let i = 0; i < arr.length; i += 1) {
+    const yourValue = arr[i];
+    const pairIdx = yourValueVsPairIdx[yourValue];
+    if (pairIdx) return [pairIdx, i];
+    yourValueVsPairIdx[n - yourValue] = i;
+    console.log('🚀  yourValueVsPairIdx:', yourValueVsPairIdx);
+  }
+};
 
 console.log("v2======>>>>>>");
 console.time();
