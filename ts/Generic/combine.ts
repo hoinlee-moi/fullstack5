@@ -22,7 +22,8 @@ type Combine<T, V> = InterProperty<T, V> & {
 };
 
 type ICombined = Combine<IUser, IDept>;
-type A = InterProperty<IUser, IDept>;
+// type A = InterProperty<IUser, IDept>;
+
 
 const a: ICombined = {
   id: 2,
