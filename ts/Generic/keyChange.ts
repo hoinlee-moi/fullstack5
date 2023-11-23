@@ -13,10 +13,10 @@ interface IDept {
 
 
 
-type Change<T, K extends keyof T, V> = Omit<T, K> & { [key in K]: V };
+type Change<T, K extends keyof T, U> = Omit<T, K> & { [key in K]: U };
 
-type Change2<T, K extends keyof T, V> = {
-  [key in keyof T] : key extends K ? V : T[key]
+type Change2<T, K extends keyof T, U> = {
+  [key in keyof T] : key extends K ? U : T[key]
 };
 
 

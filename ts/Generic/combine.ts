@@ -28,11 +28,10 @@ type Combine2<T, U> = {
       : never
     : (T & U)[key];
 };
+
 type Combine3<T, U> = {
-  [key in keyof (T & U)]: (T & U)[key] extends never
-    ?
-        | T[key extends keyof T ? key : never]
-        | U[key extends keyof U ? key : never]
+  [key in keyof (T & U)]: key extends keyof (T | U)
+    ? T[key] | U[key]
     : (T & U)[key];
 };
 
