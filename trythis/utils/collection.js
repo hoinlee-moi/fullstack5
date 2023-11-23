@@ -35,8 +35,6 @@ class Collection {
   get poll() {
     if (this.#isQueue()) {
       return this.dequeue();
-      // } else if (this.pop) {
-      //   return this.pop();
     } else {
       return this.#arr.pop();
     }
@@ -53,7 +51,6 @@ class Collection {
     return Collection.arrayToList(this.#arr);
   }
 
-  // [1,2] ==> {value: 1, rest: {value:2, rest: undefined}}
   static arrayToList(arr = []) {
     let node;
     for (let i = arr.length - 1; i >= 0; i -= 1) {
@@ -73,8 +70,6 @@ class Collection {
   }
 
   print(flag) {
-    // console.table(this.#arr);
-    // console.log(JSON.stringify(this.#arr, null, 2));
     console.log(
       `${flag ?? this.constructor.name}=${JSON.stringify(this.#arr)}`
     );
@@ -83,10 +78,6 @@ class Collection {
   #isQueue() {
     return this.constructor.name === "Queue";
   }
-
-  // [Symbol.iterator]() {
-  //   return this.#arr.values();
-  // }
 
   *[Symbol.iterator]() {
     for (let i = 0; i < this.#arr.length; i += 1) yield this.#arr[i];
@@ -148,8 +139,6 @@ class ArrayList extends Collection {
   }
 
   remove(val) {
-    // 1개밖에 못지워 + 2회전
-    // this._arr.splice(this._arr.indexOf(val), 1);
     this._arr = this._arr.filter((a) => a !== val);
   }
 

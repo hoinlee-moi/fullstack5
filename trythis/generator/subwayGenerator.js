@@ -32,20 +32,8 @@ class Subway {
   }
 }
 
-// const routes = new Subway('문래', '신림');
-// const routes = new Subway('문래', '을지로입구');
-// const routes = new Subway('구로디지털단지', '성수'); // 32
-// const routes = new Subway('문래', '합정'); // 46
 const routes = new Subway("신도림", "을지로입구"); // 48
 const it1 = routes[Symbol.iterator]();
-// console.log([...routes]); // [ '문래', '대림', '구로디지털단지', '신대방', '신림' ]
-// console.log(it1.next()); // { value: '문래', done: false }
-// console.log(it1.next()); // { value: '신림', done: false }
-// console.log(it1.next()); // { value: undefined, done: true }
-// console.log(it1.next()); // { value: undefined, done: true }
-// console.log(it1.next()); // { value: undefined, done: true }
-// console.log(it1.next()); // { value: undefined, done: true }
-// console.log(it1.next()); // { value: undefined, done: true }
 let cnt = 0;
 for (const s of routes) {
   console.log("curr station is", s, ++cnt);

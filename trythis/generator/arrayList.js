@@ -234,32 +234,6 @@ alist.peek; // false, 3
 alist.toArray(); // [1, 300, 22, 3]
 // alist.iterator().next();  // { value: 1, done: false }
 alist.clear(); // all clear
-
-// const arr = new ArrayList(1, 2, 3);
-
-// console.log(arr.remove(3), "삭제 후 return");
-// console.log(arr.toArray(), "array 표시");
-// console.log(arr.set(1, 10), "set바꾸기");
-// console.log(arr.toArray(), "array 표시");
-// console.log(arr.containes(10));
-// console.log(arr.containes(3));
-// console.log(arr.get(1));
-// console.log(arr.indexOf(10));
-// console.log(arr.toArray(), "array 표시");
-// console.log(arr.listToArray());
-// console.log(arr.arrayToList());
-// console.log(arr.toArray(), "array 표시");
-// console.log(arr.remove(1));
-// console.log(arr.remove(10));
-// console.log(arr.add(2));
-// console.log(arr.add(4));
-// console.log(arr.add(5));
-// console.log(arr.size,'첫검사');
-// console.log(arr.toArray(), "array 표시");
-// console.log(arr.listToArray());
-// console.log(arr.arrayToList());
-return;
-
 const stack = new Stack(); // or new Stack([1,2]); // (1,2)
 stack.push(3); // 추가하기
 assert.deepStrictEqual(stack.toArray(), [3]);
