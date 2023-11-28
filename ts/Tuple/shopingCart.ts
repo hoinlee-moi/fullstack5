@@ -1,3 +1,7 @@
+
+const f =() =>{}
+f.name
+
 /* 방법*/
 const SIZE0 = [
   { id: "X", price: 1000 },
