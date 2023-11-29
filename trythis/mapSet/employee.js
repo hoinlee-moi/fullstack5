@@ -22,17 +22,6 @@ const empDeptArr = emps.map((v) => {
 
 const empDept = new Map(empDeptArr);
 
-// const deptMap = new Map();
-// for (const value of depts) deptMap.set(value.id, value);
-
-// const empMap = new Map();
-// for (const value of emps) empMap.set(value.id, value);
-
-// const empDept = new Map();
-// for (const value of empMap) {
-//   Object.defineProperty(value[1], "dept", { enumerable: false });
-//   empDept.set(value[1], deptMap.get(value[1].dept));
-// }
 
 console.log(deptMap); // Map(2) { 1 => { id: 1, dname: '인사팀' }, 2 => { id: 2, dname: '개발팀' } }  ⇐ deptMap.get(2)
 console.log(empMap); // Map(2) { 1 => {id: 1, name: 'Hong', dept: 1}, 2 => {id: 2, name: 'Kim', dept: 2}, … }
