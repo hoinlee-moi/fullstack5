@@ -1,29 +1,26 @@
+// src/components/Hello.tsx
 import { PropsWithChildren } from 'react';
 
 type Props = {
   name: string;
   age: number;
-  obj: any;
-  //   children: React.ReactNode;
-  children: React.ReactNode;
+  plusCount: () => void;
 };
 
-// const Hello = ({ name, age, obj, children }: PropsWithChildren<Props>) => {
-const Hello = ({ name, age, obj, children }: Props) => {
-  obj.age = 40;
+const Hello = ({
+  name,
+  age,
+  plusCount,
+  children,
+}: PropsWithChildren<Props>) => {
   return (
     <>
       <h1>
-        Hello, {name} {age}
+        Hello, {name}({age})
       </h1>
-      <h3>children : {children}</h3>
-      <div>
-        <h2>
-          hello, another {obj.name} {obj.age}
-        </h2>
-      </div>
+      {children}
+      <button onClick={plusCount}>count + 1</button>
     </>
   );
 };
-
 export default Hello;
