@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Hello from './components/Hello';
 import My from './components/My';
 import './App.css';
@@ -9,6 +9,14 @@ export type Cart = { id: number; name: string; price: number };
 export type Session = {
   loginUser: LoginUser | null;
   cart: Cart[];
+};
+export type CartItem = {
+  name: string;
+  price: number;
+};
+export type HandleProp = {
+  focusFn: () => void;
+  anotherFocuFn?: () => void;
 };
 
 const SampleSession = {
@@ -24,11 +32,14 @@ const SampleSession = {
 function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState<Session>(SampleSession);
-
+  const loginChildRef = useRef<HandleProp>(null);
   const plusCount = () => setCount((prevCount) => prevCount + 1);
 
-  const login = (id: number, name: string) => {
-    if (!name) return alert('input user name, Please'), 'failed';
+  const login = ({ id, name }: LoginUser) => {
+    if (!name) {
+      loginChildRef.current?.focusFn();
+      return alert('input user name, Please');
+    }
     setSession({
       ...session,
       loginUser: { id, name },
@@ -36,6 +47,15 @@ function App() {
   };
 
   const logout = () => setSession({ ...session, loginUser: null });
+
+  const addCartItem = ({ name, price }: CartItem) => {
+    if (!name || !price) return alert('input cart item, Please');
+    const id = session.cart[session.cart.length - 1].id + 1;
+    setSession({
+      ...session,
+      cart: [...session.cart, { id: id, name, price }],
+    });
+  };
 
   const removeCartItem = (itemId: number) => {
     const newCart = session.cart.filter((item) => item.id !== itemId);
@@ -49,6 +69,8 @@ function App() {
         login={login}
         logout={logout}
         removeCartItem={removeCartItem}
+        addCartItem={addCartItem}
+        ref={loginChildRef}
       />
       <Hello name='홍길동' age={30} plusCount={plusCount}>
         <h3>반갑습니다~</h3>

@@ -1,24 +1,34 @@
 // src/components/Login.tsx
-import { FormEvent, useEffect, useRef } from 'react';
+import {
+  FormEvent,
+  forwardRef,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+} from 'react';
+import { LoginUser } from '../App';
 type Props = {
-  login: (id: number, name: string) => void;
+  login: ({ id, name }: LoginUser) => void;
 };
 
-const Login = ({ login }: Props) => {
+const Login = forwardRef(({ login }: Props, ref) => {
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const id = idRef.current?.value;
-    const ps = nameRef.current?.value || '';
-    login(Number(id), ps);
+    const name = nameRef.current?.value || '';
+    login({ id: Number(id), name });
     nameRef.current?.focus();
   };
 
-  useEffect(() => {
-    // if (idRef.current) idRef.current.value = '0';
+  const nameFocus = () => {
     if (nameRef.current) nameRef.current.focus();
+  };
+  useImperativeHandle(ref, nameFocus);
+  useEffect(() => {
+    nameFocus();
   }, []);
 
   return (
@@ -32,5 +42,5 @@ const Login = ({ login }: Props) => {
       <button type='submit'>Login</button>
     </form>
   );
-};
+});
 export default Login;
