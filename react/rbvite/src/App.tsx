@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Hello from './components/Hello';
 import My from './components/My';
 import './App.css';
@@ -10,13 +10,14 @@ export type Session = {
   loginUser: LoginUser | null;
   cart: Cart[];
 };
+
 export type CartItem = {
   name: string;
   price: number;
 };
+
 export type HandleProp = {
   focusFn: () => void;
-  anotherFocuFn?: () => void;
 };
 
 const SampleSession = {
@@ -61,6 +62,7 @@ function App() {
     const newCart = session.cart.filter((item) => item.id !== itemId);
     setSession({ ...session, cart: newCart });
   };
+
   return (
     <>
       <h2>count: {count}</h2>
