@@ -12,8 +12,8 @@ export type Session = {
 };
 
 const SampleSession = {
-  // loginUser: null,
-  loginUser: { id: 1, name: 'Hong' },
+  loginUser: null,
+  // loginUser: { id: 1, name: 'Hong' },
   cart: [
     { id: 100, name: '라면', price: 3000 },
     { id: 101, name: '컵라면', price: 2000 },
@@ -27,17 +27,18 @@ function App() {
 
   const plusCount = () => setCount((prevCount) => prevCount + 1);
 
-  //@Todo
-  const login = (id: number, name: string) =>
+  const login = (id: number, name: string) => {
+    if (!name) return alert('input user name, Please'), 'failed';
     setSession({
       ...session,
       loginUser: { id, name },
     });
+  };
 
   const logout = () => setSession({ ...session, loginUser: null });
 
-  const removeCartItem = (id: number) => {
-    const newCart = session.cart.filter((product) => product.id !== id);
+  const removeCartItem = (itemId: number) => {
+    const newCart = session.cart.filter((item) => item.id !== itemId);
     setSession({ ...session, cart: newCart });
   };
   return (

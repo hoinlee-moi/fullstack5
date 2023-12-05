@@ -1,44 +1,36 @@
 // src/components/Login.tsx
-import { useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 type Props = {
   login: (id: number, name: string) => void;
 };
 
 const Login = ({ login }: Props) => {
-  const loginIdInput = useRef<HTMLInputElement>(null);
-  const loginPsInput = useRef<HTMLInputElement>(null);
+  const idRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
-  //   const [idInputVal, setIdInputVal] = useState('');
-  //   const [nameInputVal, setNameInputVal] = useState('');
-
-  const loginClickHandle = () => {
-    const id = loginIdInput.current!.value;
-    const ps = loginPsInput.current!.value;
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const id = idRef.current?.value;
+    const ps = nameRef.current?.value || '';
     login(Number(id), ps);
+    nameRef.current?.focus();
   };
-  //   const change = () => {
-  //     const id = loginIdInput.current!.value;
-  //     const ps = loginPsInput.current!.value;
-  //     console.log(id, ps);
-  //   };
+
+  useEffect(() => {
+    // if (idRef.current) idRef.current.value = '0';
+    if (nameRef.current) nameRef.current.focus();
+  }, []);
+
   return (
-    <>
+    <form onSubmit={submit}>
       <div>
-        Login ID(숫자): <input type='number' ref={loginIdInput} />
+        Login ID(숫자): <input type='number' ref={idRef} defaultValue={0} />
       </div>
       <div>
-        Login Name:{' '}
-        <input
-          type='text'
-          ref={loginPsInput}
-          //   onChange={(e) => setNameInputVal(e.target.value)}
-        />
+        Login Name: <input type='text' ref={nameRef} />
       </div>
-      <button onClick={loginClickHandle}>Login</button>
-      {/* <button onClick={() => login(Number(idInputVal), nameInputVal)}>
-        Login2
-      </button> */}
-    </>
+      <button type='submit'>Login</button>
+    </form>
   );
 };
 export default Login;
