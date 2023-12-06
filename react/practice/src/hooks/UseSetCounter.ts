@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const setCounter = (startCount: number) => {
+const UseSetCounter = (startCount: number) => {
   const [count, setCount] = useState(startCount);
 
   const calCount = (command: 'up' | 'down') => {
@@ -11,4 +11,4 @@ const setCounter = (startCount: number) => {
   return [count, calCount] as const;
 };
 
-export default setCounter;
+export default UseSetCounter;

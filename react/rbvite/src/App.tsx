@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Hello from './components/Hello';
 import My from './components/My';
 import './App.css';
@@ -34,6 +34,7 @@ function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState<Session>(SampleSession);
   const loginChildRef = useRef<HandleProp>(null);
+
   const plusCount = () => setCount((prevCount) => prevCount + 1);
 
   const login = ({ id, name }: LoginUser) => {
