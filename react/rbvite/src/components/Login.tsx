@@ -1,17 +1,9 @@
 // src/components/Login.tsx
-import {
-  FormEvent,
-  forwardRef,
-  useEffect,
-  useRef,
-  useImperativeHandle,
-} from 'react';
-import { LoginUser } from '../App';
-type Props = {
-  login: ({ id, name }: LoginUser) => void;
-};
+import { FormEvent, useEffect, useRef } from 'react';
+import { useSession } from '../hooks/session-context';
 
-const Login = forwardRef(({ login }: Props, ref) => {
+const Login = () => {
+  const { login } = useSession();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -19,14 +11,26 @@ const Login = forwardRef(({ login }: Props, ref) => {
     e.preventDefault();
     const id = idRef.current?.value;
     const name = nameRef.current?.value || '';
+    if (!id) {
+      alert('ID를 정확히 입력해주세요!');
+      return idFocus();
+    }
+    if (!name) {
+      alert('이름을 정확히 입력해주세요!');
+      return nameFocus();
+    }
     login({ id: Number(id), name });
-    nameRef.current?.focus();
   };
 
   const nameFocus = () => {
     if (nameRef.current) nameRef.current.focus();
   };
-  useImperativeHandle(ref, nameFocus);
+  const idFocus = () => {
+    if (idRef.current) idRef.current.focus();
+  };
+
+  // useImperativeHandle(ref, () => ({ nameFocus }));
+
   useEffect(() => {
     nameFocus();
   }, []);
@@ -42,5 +46,5 @@ const Login = forwardRef(({ login }: Props, ref) => {
       <button type='submit'>Login</button>
     </form>
   );
-});
+};
 export default Login;
