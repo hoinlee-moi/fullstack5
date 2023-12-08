@@ -28,9 +28,11 @@ SeSAC 웹 풀스택 프로젝트 실무과정
 
 ### 1-12. [RegExp](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/string_regExp/README.md)
 
-### 1-13. [Promise & async/await](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/promise/README.md)
+### 1-13 [비동기프로그래밍]()
 
-### 1-14. [Dom](https://github.com/hoinlee-moi/fullstack5/tree/main/trythis/Dom/README.md)
+### 1-14. [Promise & async/await](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/promise/README.md)
+
+### 1-15. [Dom](https://github.com/hoinlee-moi/fullstack5/tree/main/trythis/Dom/README.md)
 
 <br>
 
