@@ -1,55 +1,42 @@
 // src/components/My.tsx
-import { FormEvent, useRef } from 'react';
+
 import Login from './Login';
 import Profile from './Profile';
 import { useSession } from '../hooks/session-context';
+import SaveCartItemForm from './SaveCartItemFrom';
+import { useState } from 'react';
+import ModifyCartItemForm from './ModifyCartItemForm';
 
 const My = () => {
   const {
     session: { loginUser, cart },
-    saveCartItem,
     deleteCartItem,
   } = useSession();
-  const itemNameRef = useRef<HTMLInputElement>(null);
-  const itemPriceRef = useRef<HTMLInputElement>(null);
+  const [modify, setModify] = useState<modifyState>({
+    state: false,
+    id: 0,
+  });
+  const successModify = () => setModify({ state: false, id: 0 });
 
-  const addCartItemSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const name = itemNameRef.current?.value;
-    const price = itemPriceRef.current?.value;
-    if (!name) {
-      alert('상품명을 정확히 입력해주세요');
-      return itemNameRef.current?.focus();
-    }
-    if (!price || price === '0') {
-      alert('상품 가격을 정확히 입력해주세요');
-      return itemPriceRef.current?.focus();
-    }
-    saveCartItem({ name, price: Number(price) });
-    itemNameRef.current.value = '';
-    itemPriceRef.current.value = '';
-  };
+  const onModifyState = (id: number) => setModify({ state: true, id });
 
   return (
     <>
       {loginUser ? <Profile /> : <Login />}
-      <form onSubmit={addCartItemSubmit}>
-        <div>
-          추가할 상품 이름 : <input type='text' ref={itemNameRef} />
-        </div>
-        <div>
-          추가할 상품 가격 : <input type='number' ref={itemPriceRef} />
-        </div>
-        <button type='submit'>추가</button>
-      </form>
       <ul>
         {cart.map(({ id, name, price }) => (
           <li key={id}>
             {name}({price})
             <button onClick={() => deleteCartItem(id)}>삭제</button>
+            <button onClick={() => onModifyState(id)}>수정</button>
           </li>
         ))}
       </ul>
+      {modify.state ? (
+        <ModifyCartItemForm id={modify.id} successModify={successModify} />
+      ) : (
+        <SaveCartItemForm />
+      )}
     </>
   );
 };

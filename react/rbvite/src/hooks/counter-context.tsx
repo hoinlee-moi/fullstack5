@@ -23,4 +23,5 @@ const CounterProvider = ({ children }: PropsWithChildren) => {
 
 const useCounter = () => useContext(CounterContext);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { CounterProvider, useCounter };
