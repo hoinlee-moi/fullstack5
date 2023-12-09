@@ -101,25 +101,3 @@ function Promise(cb) {
 
   cb(this.resolve, this.reject);
 }
-
-/*
-처음 실행시 pending상태로 바뀌고 cb을 실행시킨다
-콜백을 실행시킬 시 setTimeout으로 비동기 실행이 돼서 아래 코드가 실행된다
-resolve나 reject가 실행될 때 다시 Promise를 실행하게 하고 클로저를 사용해서 저장된 값을 확인하고
-이때 pending 상태면 
-*/
-
-// Object.defineProperties(this, {
-//   thenFn: {
-//     enumerable: false,
-//     writable: true,
-//   },
-//   catchFn: {
-//     enumerable: false,
-//     writable: true,
-//   },
-//   finallyFn: {
-//     enumerable: false,
-//     writable: true,
-//   },
-// });

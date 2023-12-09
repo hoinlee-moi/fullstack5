@@ -18,9 +18,6 @@ const promiseAll = async (promises) => {
     for await (const promi of arr) {
       results.push(promi);
     }
-//   for await (const fao of promises) {
-//     results.push(fao);
-//   }
   return results;
 };
 // const promiseAll = async promises => {
