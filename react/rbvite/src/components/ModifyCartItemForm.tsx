@@ -14,8 +14,8 @@ const ModifyCartItemForm = ({ id, successModify }: Props) => {
   const targetItem = cart.find((item) => item.id === id);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
-  // const [changeState, setChangeState] = useState<boolean>(false);
   const modifyBtnRef = useRef<HTMLButtonElement>(null);
+  // const [changeState, setChangeState] = useState<boolean>(false);
   const modifyHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
