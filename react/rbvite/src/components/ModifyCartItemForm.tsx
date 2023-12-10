@@ -14,7 +14,8 @@ const ModifyCartItemForm = ({ id, successModify }: Props) => {
   const targetItem = cart.find((item) => item.id === id);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
-  const [changeState, setChangeState] = useState<boolean>(false);
+  // const [changeState, setChangeState] = useState<boolean>(false);
+  const modifyBtnRef = useRef<HTMLButtonElement>(null);
   const modifyHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,10 +28,12 @@ const ModifyCartItemForm = ({ id, successModify }: Props) => {
     const name = itemNameRef.current?.value;
     const price = itemPriceRef.current?.value;
     if (targetItem?.name !== name || targetItem?.price !== Number(price)) {
-      setChangeState(true);
+      modifyBtnRef.current!.style.visibility = 'visible';
+      // setChangeState(true);
       return;
     }
-    setChangeState(false);
+    modifyBtnRef.current!.style.visibility = 'hidden';
+    // setChangeState(false);
   };
   return (
     <form onSubmit={modifyHandle}>
@@ -52,10 +55,7 @@ const ModifyCartItemForm = ({ id, successModify }: Props) => {
           onChange={checkChangedItem}
         />
       </div>
-      <button
-        type='submit'
-        style={{ visibility: changeState ? 'visible' : 'hidden' }}
-      >
+      <button type='submit' style={{ visibility: 'hidden' }} ref={modifyBtnRef}>
         수정완료
       </button>
     </form>
