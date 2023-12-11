@@ -4,8 +4,7 @@ type SessionContextProps = {
   session: Session;
   login: ({ id, name }: LoginUser) => void;
   logout: () => void;
-  saveCartItem: ({ name, price }: CartItem) => void;
-  modifyCartItem: ({ id, name, price }: Cart) => void;
+  saveCartItem: ({ id, name, price }: Cart) => void;
   deleteCartItem: (id: number) => void;
 };
 
@@ -14,7 +13,6 @@ const SessionContext = createContext<SessionContextProps>({
   login: () => {},
   logout: () => {},
   saveCartItem: () => {},
-  modifyCartItem: () => {},
   deleteCartItem: () => {},
 });
 
@@ -31,16 +29,17 @@ const SessionProvider = ({ children }: PropsWithChildren) => {
 
   const logout = () => setSession({ ...session, loginUser: null });
 
-  const saveCartItem = ({ name, price }: CartItem) => {
-    const id = Math.max(...session.cart.map((item) => item.id), 0) + 1;
-    setSession({ ...session, cart: [...session.cart, { id, name, price }] });
-  };
-
-  const modifyCartItem = ({ id, name, price }: Cart) => {
-    const newCartList = session.cart.map((item) =>
-      item.id === id ? { id, name, price } : item
-    );
-    setSession({ ...session, cart: newCartList });
+  const saveCartItem = ({ id, name, price }: Cart) => {
+    const { cart } = session;
+    id = id || Math.max(...session.cart.map((item) => item.id), 0) + 1;
+    const item = id ? session.cart.find((item) => item.id === id) : null;
+    if (item) {
+      item.name = name;
+      item.price = price;
+    } else {
+      cart.push({ id, name, price });
+    }
+    setSession({ ...session, cart: cart });
   };
 
   const deleteCartItem = (id: number) => {
@@ -55,7 +54,6 @@ const SessionProvider = ({ children }: PropsWithChildren) => {
         login,
         logout,
         saveCartItem,
-        modifyCartItem,
         deleteCartItem,
       }}
     >

@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import './App.css';
 import Box from './components/Box';
 import Counter from './components/Counter';
@@ -6,6 +7,14 @@ import setCounter from './hooks/UseSetCounter';
 
 function App() {
   const [count, setCount] = setCounter(0);
+  const [subTitle, setSubTitle] = useState('sub title: react basic');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const changeSubTitle = () => {
+    const titleStr = inputRef.current?.value || '';
+    setSubTitle(titleStr);
+  };
+
   return (
     <>
       <Box
@@ -16,10 +25,14 @@ function App() {
         margin='2px'
       >
         <Title title='React Tutorial' color='red'>
-          sub title: react basic
+          {subTitle}
         </Title>
         <h1>Count : {count}</h1>
         <Counter increaseOrDecreaseCount={setCount} />
+        <div>
+          <input type='text' ref={inputRef} />
+          <button onClick={changeSubTitle}>타이틀 수정</button>
+        </div>
       </Box>
     </>
   );

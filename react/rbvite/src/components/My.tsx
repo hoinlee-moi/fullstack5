@@ -5,20 +5,18 @@ import Profile from './Profile';
 import { useSession } from '../hooks/session-context';
 import SaveCartItemForm from './SaveCartItemFrom';
 import { useState } from 'react';
-import ModifyCartItemForm from './ModifyCartItemForm';
 
 const My = () => {
   const {
     session: { loginUser, cart },
     deleteCartItem,
   } = useSession();
-  const [modify, setModify] = useState<modifyState>({
-    state: false,
-    id: 0,
-  });
-  const successModify = () => setModify({ state: false, id: 0 });
+  const [modify, setModify] = useState<Cart | null>(null);
 
-  const onModifyState = (id: number) => setModify({ state: true, id });
+  const successModify = () => setModify(null);
+
+  const onModifyState = (id: number) =>
+    setModify(cart.find((item) => item.id === id) || null);
 
   return (
     <>
@@ -32,11 +30,7 @@ const My = () => {
           </li>
         ))}
       </ul>
-      {modify.state ? (
-        <ModifyCartItemForm id={modify.id} successModify={successModify} />
-      ) : (
-        <SaveCartItemForm />
-      )}
+      <SaveCartItemForm modifyItem={modify} completeModify={successModify} />
     </>
   );
 };

@@ -1,3 +1,5 @@
+import { MutableRefObject, forwardRef } from 'react';
+
 type Props = {
   increaseOrDecreaseCount: (args: 'up' | 'down') => void;
 };
