@@ -11,6 +11,13 @@ const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (itemNameRef.current && itemPriceRef.current && modifyItem) {
+      itemNameRef.current.value = modifyItem.name;
+      itemPriceRef.current.value = '' + modifyItem.price;
+    }
+  }, [modifyItem]);
+
   const [isDirty, setDirty] = useState(false);
   const dirtyCheck = () => {
     const name = itemNameRef.current?.value;
@@ -53,13 +60,6 @@ const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
   };
 
   const descriptionStr = modifyItem ? '수정' : '추가';
-
-  useEffect(() => {
-    if (itemNameRef.current && itemPriceRef.current) {
-      itemNameRef.current.value = modifyItem?.name || '';
-      itemPriceRef.current.value = '' + modifyItem?.price || '';
-    }
-  }, [modifyItem]);
 
   return (
     <form onSubmit={submitHandle}>
