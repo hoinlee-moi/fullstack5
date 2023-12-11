@@ -1,9 +1,11 @@
 // src/components/Login.tsx
 import { FormEvent, useEffect, useRef } from 'react';
 import { useSession } from '../hooks/session-context';
+import { useCounter } from '../hooks/counter-context';
 
 const Login = () => {
   const { login } = useSession();
+  const { plusCount, minusCount } = useCounter();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -33,6 +35,10 @@ const Login = () => {
 
   useEffect(() => {
     nameFocus();
+    plusCount();
+    return () => {
+      minusCount();
+    };
   }, []);
 
   return (
