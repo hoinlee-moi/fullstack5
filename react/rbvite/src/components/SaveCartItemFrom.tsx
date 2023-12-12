@@ -12,9 +12,9 @@ const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
   const itemPriceRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (itemNameRef.current && itemPriceRef.current && modifyItem) {
-      itemNameRef.current.value = modifyItem.name;
-      itemPriceRef.current.value = '' + modifyItem.price;
+    if (itemNameRef.current && itemPriceRef.current) {
+      itemNameRef.current.value = modifyItem?.name || '';
+      itemPriceRef.current.value = '' + (modifyItem?.price || '');
     }
   }, [modifyItem]);
 

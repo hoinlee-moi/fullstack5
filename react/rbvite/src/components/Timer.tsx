@@ -6,7 +6,7 @@ const Timer = () => {
   const [secTimer, setSecTimer] = useState(0);
   const [useInterTimer, useTimeOut] = useTimer();
 
-  useInterTimer(() => setSecTimer((sec) => sec + 10), 1000);
+  useInterTimer(() => setSecTimer((sec) => sec + 10), 10000);
 
   useTimeOut((name) => setTitle(name), 5000, 'TimerGood');
 
