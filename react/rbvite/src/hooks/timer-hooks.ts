@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 export const useTimer = () => {
-  const interTimer = (cb: () => void, delay: number) => {
+  const useInterTimer = (cb: () => void, delay: number) => {
     useEffect(() => {
-      let inter = setInterval(cb, delay);
+      const inter = setInterval(cb, delay);
       return () => {
         clearInterval(inter);
       };
     }, []);
   };
-  const timerSetInit = <T extends Array<unknown>>(
+  const useTimeOut = <T extends Array<unknown>>(
     cb: (...args: T) => void,
     delay: number,
     ...args: T
@@ -18,5 +18,5 @@ export const useTimer = () => {
       return () => clearTimeout(timer);
     }, []);
   };
-  return [interTimer, timerSetInit] as const;
+  return [useInterTimer, useTimeOut] as const;
 };

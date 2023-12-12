@@ -4,11 +4,11 @@ import { useTimer } from '../hooks/timer-hooks';
 const Timer = () => {
   const [title, setTitle] = useState('Timer');
   const [secTimer, setSecTimer] = useState(0);
-  const [interTimer, timerSetInit] = useTimer();
+  const [useInterTimer, useTimeOut] = useTimer();
 
-  interTimer(() => setSecTimer((sec) => sec + 10), 1000);
+  useInterTimer(() => setSecTimer((sec) => sec + 10), 1000);
 
-  timerSetInit((name) => setTitle(name), 5000, 'TimerGood');
+  useTimeOut((name) => setTitle(name), 5000, 'TimerGood');
 
   return (
     <div>

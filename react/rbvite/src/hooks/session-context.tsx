@@ -1,4 +1,5 @@
 import { PropsWithChildren, createContext, useState, useContext } from 'react';
+import { useFetch } from './fetch-hook';
 
 type SessionContextProps = {
   session: Session;
@@ -21,6 +22,24 @@ const SessionProvider = ({ children }: PropsWithChildren) => {
     loginUser: null,
     cart: [],
   });
+  const [useSessionFetch] = useFetch();
+  const fetchSetSession = (data: Session) => setSession(data);
+  useSessionFetch('/data/sample-logined.json', fetchSetSession);
+  useSessionFetch('/data/sample-logined.json', fetchSetSession);
+  useSessionFetch('/data/sample-logined.json', fetchSetSession);
+  // useEffect(() => {
+  //   const url = '/data/sample.json';
+  //   const controller = new AbortController();
+  //   const { signal } = controller;
+  //   fetch(url, { signal })
+  //     .then((res) => res.json())
+  //     .then((data) => setSession(data))
+  //     .catch((err) => console.error(err));
+  //   return () => {
+  //     controller.abort();
+  //   };
+  // }, []);
+
   const login = ({ id, name }: LoginUser) =>
     setSession({
       ...session,
