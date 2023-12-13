@@ -4,7 +4,7 @@ SeSAC 웹 풀스택 프로젝트 실무과정
 
 ## :computer: Chapter 01 - Javascript
 
-### 1-1. [Computer Architecture & Compiler](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/Computer_Architecture/README.md)
+### 1-1. [Computer Architecture & Compiler](./JS/Computer_Architecture/README.md)
 
 ### 1-2. [Hoisting](https://github.com/hoinlee-moi/fullstack5/blob/main/trythis/Hoisting/README.md)
 
@@ -62,9 +62,8 @@ SeSAC 웹 풀스택 프로젝트 실무과정
 
 ### 3-2. [Hook]
 
-
 <br>
 
 ## :pencil2: Chapter04 - Linux
 
-###  4-1. [리눅스 기초]()
+### 4-1. [리눅스 기초]()
