@@ -18,5 +18,5 @@ export const useTimer = () => {
       return () => clearTimeout(timer);
     }, []);
   };
-  return [useInterTimer, useTimeOut] as const;
+  return { useInterTimer, useTimeOut };
 };

@@ -1,23 +1,31 @@
 // src/components/Hello.tsx
-import { PropsWithChildren } from 'react';
-import { useCounter } from '../hooks/counter-context';
+import { memo, useEffect, useReducer } from 'react';
+import { Sample } from './Sample';
 
 type Props = {
   name: string;
   age: number;
+  fn: () => void;
 };
 
-const Hello = ({ name, age, children }: PropsWithChildren<Props>) => {
-  const { plusCount } = useCounter();
+const Hello = memo(({ name, age, fn }: Props) => {
+  // const [isActive, setActive] = useState(false);
+  const [isActive, toggleActive] = useReducer((preAc) => !preAc, false);
+  useEffect(() => {
+    console.log('child fn>>', fn());
+  }, [fn]);
+
   return (
     <>
       <h1>
         Hello, {name}({age})
       </h1>
-
-      {children}
-      <button onClick={plusCount}>count + 1</button>
+      <h3>반갑습니다~</h3>
+      Active : {isActive + ''}
+      <button onClick={toggleActive}>acitveToggle</button>
+      <hr />
+      <Sample />
     </>
   );
-};
+});
 export default Hello;

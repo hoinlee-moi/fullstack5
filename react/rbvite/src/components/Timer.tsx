@@ -4,7 +4,7 @@ import { useTimer } from '../hooks/timer-hooks';
 const Timer = () => {
   const [title, setTitle] = useState('Timer');
   const [secTimer, setSecTimer] = useState(0);
-  const [useInterTimer, useTimeOut] = useTimer();
+  const { useInterTimer, useTimeOut } = useTimer();
 
   useInterTimer(() => setSecTimer((sec) => sec + 10), 10000);
 

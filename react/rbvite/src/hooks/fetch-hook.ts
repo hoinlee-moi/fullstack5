@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
 
-export const useFetch = <T>(url: string): T | undefined => {
-  const [data, setData] = useState<T>();
+const cacheUrlData: Record<string, unknown> = {};
+
+const fetchByCache = async (url: string, signal: AbortSignal) => {
+  if (url in cacheUrlData) return cacheUrlData[url];
+  const res = await fetch(url, { signal });
+  const data = await res.json();
+  cacheUrlData[url] = data;
+  return data;
+};
+
+export const useFetch = <T>(url: string) => {
+  const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
-
-    fetch(url, { signal })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    fetchByCache(url, signal).then((data) => setData(data));
 
     return () => controller.abort();
   }, []);

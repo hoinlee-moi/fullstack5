@@ -7,6 +7,7 @@ const Profile = () => {
     session: { loginUser },
     logout,
   } = useSession();
+
   return (
     <>
       <div>User Name: {loginUser?.name}</div>

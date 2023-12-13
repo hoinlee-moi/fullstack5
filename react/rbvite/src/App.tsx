@@ -4,18 +4,20 @@ import My from './components/My';
 import './App.css';
 import { useCounter } from './hooks/counter-context';
 import Timer from './components/Timer';
+import { useCallback } from 'react';
 
 function App() {
-  const { count } = useCounter();
+  const { count, plusCount, minusCount } = useCounter();
+  const fn = useCallback(() => 'FN!', []);
 
   return (
     <>
       <Timer />
       <My />
-      <Hello name='홍길동' age={30}>
-        <h2>count : {count}</h2>
-        <h3>반갑습니다~</h3>
-      </Hello>
+      <h2>count : {count}</h2>
+      <button onClick={plusCount}>count + 1</button>
+      <button onClick={minusCount}>count - 1</button>
+      <Hello name='홍길동' age={32} fn={fn} />
     </>
   );
 }
