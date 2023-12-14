@@ -1,10 +1,12 @@
 // src/components/Login.tsx
-import { FormEvent, useEffect, useRef } from 'react';
-import { useSession } from '../hooks/session-context';
+import { FormEvent, memo, useEffect, useRef } from 'react';
 import { useCounter } from '../hooks/counter-context';
 
-const Login = () => {
-  const { login } = useSession();
+type Props = {
+  loginFn: ({ id, name }: LoginUser) => void;
+};
+
+const Login = ({ loginFn }: Props) => {
   const { plusCount, minusCount } = useCounter();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -21,7 +23,7 @@ const Login = () => {
       alert('이름을 정확히 입력해주세요!');
       return nameFocus();
     }
-    login({ id: Number(id), name });
+    loginFn({ id: Number(id), name });
   };
 
   const nameFocus = () => {
@@ -53,4 +55,4 @@ const Login = () => {
     </form>
   );
 };
-export default Login;
+export default memo(Login);

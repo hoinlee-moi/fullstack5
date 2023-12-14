@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useState,
 } from 'react';
 import { useFetch } from './fetch-hook';
 
@@ -24,44 +23,66 @@ const SessionContext = createContext<SessionContextProps>({
   deleteCartItem: () => {},
 });
 
-const reducer = (
-  session: Session,
-  { type, payload }: Action<LoginUser | Cart>
-) => {
+type ReducerType = 'LOGIN' | 'LOGOUT' | 'SAVE' | 'UPDATE' | 'DELETE';
+type ReducerAction = Action<ReducerType, Session | Cart | number>;
+const isCart = (obj: unknown): obj is Cart =>
+  typeof obj === 'object' && obj !== null && 'price' in obj;
+const isSession = (obj: unknown): obj is Session =>
+  typeof obj === 'object' && obj !== null && 'loginUser' in obj;
+
+const reducer = (session: Session, { type, payload }: ReducerAction) => {
   switch (type) {
     case 'LOGIN':
-      if (payload && !('price' in payload))
-        return {
-          ...session,
-          loginUser: { id: payload?.id, name: payload?.name },
-        };
+      if (
+        typeof payload === 'object' &&
+        isSession(payload) &&
+        payload.loginUser
+      ) {
+        localStorage.setItem(payload.loginUser.name, JSON.stringify(payload));
+        return { ...payload };
+      }
       break;
     case 'LOGOUT':
+      if (
+        typeof payload === 'object' &&
+        isSession(payload) &&
+        payload.loginUser
+      )
+        localStorage.setItem(
+          payload.loginUser.name,
+          JSON.stringify({ ...session, loginUser: null })
+        );
       return { ...session, loginUser: null };
     case 'SAVE':
-      if (payload && 'price' in payload) {
-        session.cart.push({
-          id: payload.id,
-          name: payload.name,
-          price: payload.price,
-        });
-        return session;
+      if (typeof payload === 'object' && 'price' in payload) {
+        const newCart = [
+          ...session.cart,
+          { id: payload.id, name: payload.name, price: payload.price },
+        ];
+        localStorage.setItem('cart', JSON.stringify(newCart));
+        return {
+          ...session,
+          cart: newCart,
+        };
       }
       break;
     case 'UPDATE':
-      if (payload && 'price' in payload) {
+      if (typeof payload === 'object' && 'price' in payload) {
         const item = session.cart.find((item) => item.id === payload.id);
         if (item) {
           item.name = payload.name;
           item.price = payload.price;
         }
+        localStorage.setItem('cart', JSON.stringify(session.cart));
       }
       break;
     case 'DELETE':
-      if (payload) {
+      if (typeof payload === 'number') {
+        const filterCart = session.cart.filter((item) => item.id !== payload);
+        localStorage.setItem('user', JSON.stringify(filterCart));
         return {
           ...session,
-          cart: session.cart.filter((item) => item.id !== payload.id),
+          cart: filterCart,
         };
       }
       break;
@@ -72,48 +93,40 @@ const reducer = (
 };
 
 const SessionProvider = ({ children }: PropsWithChildren) => {
-  const defalutSession: Session = {
-    loginUser: null,
-    cart: [
-      { id: 100, name: '라면1', price: 3000 },
-      { id: 101, name: '컵라면2', price: 2000 },
-      { id: 102, name: '파3', price: 5000 },
-    ],
-  };
-  const [session2, dispatch] = useReducer(reducer, defalutSession);
-  // const [counter, dispatch] = useReducer(reducer, 0);
-  const [session, setSession] = useState<Session>({
+  const [session, dispatch] = useReducer(reducer, {
     loginUser: null,
     cart: [],
   });
+
+  const initData = () => {
+    localStorage.getItem('user');
+  };
   const data = useFetch<Session>('/data/sample-logined.json');
 
   useEffect(() => {
-    // if (data) setSession(data);
+    if (data) dispatch({ type: 'LOGIN', payload: data });
   }, [data]);
 
   const login = ({ id, name }: LoginUser) =>
-    setSession({ ...session, loginUser: { id, name } });
-  // dispatch<LoginUser>({ type: 'LOGIN', payload: { id, name } });
+    dispatch({
+      type: 'LOGIN',
+      payload: { ...session, loginUser: { id, name } },
+    });
 
-  // const logout = () => setSession({ ...session, loginUser: null });
+  const logout = () =>
+    dispatch({ type: 'LOGOUT', payload: { ...session, loginUser: null } });
 
   const saveCartItem = ({ id, name, price }: Cart) => {
-    const { cart } = session;
-    id = id || Math.max(...session.cart.map((item) => item.id), 0) + 1;
-    const item = id ? session.cart.find((item) => item.id === id) : null;
-    if (item) {
-      item.name = name;
-      item.price = price;
+    if (id) {
+      dispatch({ type: 'UPDATE', payload: { id, name, price } });
     } else {
-      cart.push({ id, name, price });
+      id = Math.max(...session.cart.map((item) => item.id), 0) + 1;
+      dispatch({ type: 'SAVE', payload: { id, name, price } });
     }
-    setSession({ ...session, cart: cart });
   };
 
   const deleteCartItem = (id: number) => {
-    const newCartList = session.cart.filter((item) => item.id !== id);
-    setSession({ ...session, cart: newCartList });
+    dispatch({ type: 'DELETE', payload: id });
   };
 
   return (
