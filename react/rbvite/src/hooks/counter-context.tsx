@@ -17,8 +17,7 @@ const CounterContext = createContext<CounterContextProps>({
   minusCount: () => {},
 });
 
-type Action = { type: string; payload?: number };
-const reducer = (count: number, { type, payload = 1 }: Action) => {
+const reducer = (count: number, { type, payload = 1 }: Action<number>) => {
   switch (type) {
     case 'plus':
       return count + payload;
