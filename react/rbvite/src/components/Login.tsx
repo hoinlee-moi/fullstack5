@@ -7,6 +7,7 @@ type Props = {
 };
 
 const Login = ({ loginFn }: Props) => {
+  console.log('render!!');
   const { plusCount, minusCount } = useCounter();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);

@@ -1,1 +1,1 @@
-type Action<T> = { type: string; payload?: T };
+type Action<T, U> = { type: T; payload?: U };

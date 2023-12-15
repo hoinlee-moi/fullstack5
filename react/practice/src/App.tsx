@@ -4,14 +4,11 @@ import Box from './components/Box';
 import Counter from './components/Counter';
 import Title from './components/Title';
 import setCounter from './hooks/UseSetCounter';
-import Child from './components/Child';
 
 function App() {
   const [count, setCount] = setCounter(0);
   const [subTitle, setSubTitle] = useState('sub title: react basic');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const testChildRef = useRef<{ focusFn: () => void }>(null);
 
   const changeSubTitle = () => {
     const titleStr = inputRef.current?.value || '';
@@ -37,8 +34,6 @@ function App() {
           <button onClick={changeSubTitle}>타이틀 수정</button>
         </div>
       </Box>
-      <Child childRef={testChildRef} />
-      <button onClick={testChildRef.current!.focusFn}>포커스 버튼</button>
     </>
   );
 }

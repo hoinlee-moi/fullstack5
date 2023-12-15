@@ -4,12 +4,13 @@ import Login from './Login';
 import Profile from './Profile';
 import { useSession } from '../hooks/session-context';
 import SaveCartItemForm from './SaveCartItemFrom';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const My = () => {
   const {
     session: { loginUser, cart },
     deleteCartItem,
+    login,
   } = useSession();
   const [modify, setModify] = useState<Cart | null>(null);
 
@@ -17,10 +18,14 @@ const My = () => {
 
   const onModifyState = (id: number) =>
     setModify(cart.find((item) => item.id === id) || null);
+  const loginFn = useCallback(
+    ({ id, name }: LoginUser) => login({ id, name }),
+    []
+  );
 
   return (
     <>
-      {loginUser ? <Profile /> : <Login />}
+      {loginUser ? <Profile /> : <Login loginFn={loginFn} />}
       <ul>
         {cart.map(({ id, name, price }) => (
           <li key={id}>

@@ -2,10 +2,8 @@ import {
   PropsWithChildren,
   createContext,
   useContext,
-  useEffect,
   useReducer,
 } from 'react';
-import { useFetch } from './fetch-hook';
 
 type SessionContextProps = {
   session: Session;
@@ -30,36 +28,35 @@ const isCart = (obj: unknown): obj is Cart =>
 const isSession = (obj: unknown): obj is Session =>
   typeof obj === 'object' && obj !== null && 'loginUser' in obj;
 
-const reducer = (session: Session, { type, payload }: ReducerAction) => {
+const reducer = (
+  session: Session,
+  { type, payload }: ReducerAction
+): Session => {
   switch (type) {
     case 'LOGIN':
-      if (
-        typeof payload === 'object' &&
-        isSession(payload) &&
-        payload.loginUser
-      ) {
-        localStorage.setItem(payload.loginUser.name, JSON.stringify(payload));
-        return { ...payload };
+      if (isSession(payload) && payload.loginUser) {
+        const { name } = payload.loginUser;
+        const user = localStorage.getItem(name);
+        user ?? localStorage.setItem(name, JSON.stringify(payload));
+        return { ...(user ? JSON.parse(user) : payload) };
       }
       break;
     case 'LOGOUT':
-      if (
-        typeof payload === 'object' &&
-        isSession(payload) &&
-        payload.loginUser
-      )
-        localStorage.setItem(
-          payload.loginUser.name,
-          JSON.stringify({ ...session, loginUser: null })
-        );
-      return { ...session, loginUser: null };
+      return {
+        loginUser: null,
+        cart: JSON.parse(localStorage.getItem('logoutCart') || '[]'),
+      };
     case 'SAVE':
-      if (typeof payload === 'object' && 'price' in payload) {
-        const newCart = [
-          ...session.cart,
-          { id: payload.id, name: payload.name, price: payload.price },
-        ];
-        localStorage.setItem('cart', JSON.stringify(newCart));
+      if (isCart(payload)) {
+        const { id, name, price } = payload;
+        const newCart = [...session.cart, { id, name, price }];
+        session.loginUser
+          ? localStorage.setItem(
+              session.loginUser.name,
+              JSON.stringify({ ...session, cart: newCart })
+            )
+          : localStorage.setItem('logoutCart', JSON.stringify(newCart));
+
         return {
           ...session,
           cart: newCart,
@@ -67,27 +64,37 @@ const reducer = (session: Session, { type, payload }: ReducerAction) => {
       }
       break;
     case 'UPDATE':
-      if (typeof payload === 'object' && 'price' in payload) {
+      if (isCart(payload)) {
         const item = session.cart.find((item) => item.id === payload.id);
         if (item) {
           item.name = payload.name;
           item.price = payload.price;
         }
-        localStorage.setItem('cart', JSON.stringify(session.cart));
+        if (session.loginUser) {
+          localStorage.setItem(session.loginUser.name, JSON.stringify(session));
+        } else {
+          localStorage.setItem('logoutCart', JSON.stringify(session.cart));
+        }
+        return session;
       }
       break;
     case 'DELETE':
       if (typeof payload === 'number') {
         const filterCart = session.cart.filter((item) => item.id !== payload);
-        localStorage.setItem('user', JSON.stringify(filterCart));
+        if (session.loginUser) {
+          localStorage.setItem(
+            session.loginUser.name,
+            JSON.stringify({ ...session, cart: filterCart })
+          );
+        } else {
+          localStorage.setItem('logoutCart', JSON.stringify(filterCart));
+        }
         return {
           ...session,
           cart: filterCart,
         };
       }
       break;
-    default:
-      return session;
   }
   return session;
 };
@@ -95,17 +102,14 @@ const reducer = (session: Session, { type, payload }: ReducerAction) => {
 const SessionProvider = ({ children }: PropsWithChildren) => {
   const [session, dispatch] = useReducer(reducer, {
     loginUser: null,
-    cart: [],
+    cart: JSON.parse(localStorage.getItem('logoutCart') || '[]'),
   });
 
-  const initData = () => {
-    localStorage.getItem('user');
-  };
-  const data = useFetch<Session>('/data/sample-logined.json');
+  // const data = useFetch<Session>('/data/sample-logined.json');
 
-  useEffect(() => {
-    if (data) dispatch({ type: 'LOGIN', payload: data });
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) dispatch({ type: 'LOGIN', payload: data });
+  // }, [data]);
 
   const login = ({ id, name }: LoginUser) =>
     dispatch({
