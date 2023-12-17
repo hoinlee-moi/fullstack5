@@ -22,7 +22,6 @@ const My = () => {
     ({ id, name }: LoginUser) => login({ id, name }),
     []
   );
-
   return (
     <>
       {loginUser ? <Profile /> : <Login loginFn={loginFn} />}

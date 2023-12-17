@@ -32,10 +32,27 @@ enum ActionType {
 }
 type ActionPayloadType =
   | Action<ActionType.LOGIN, Session>
-  | Action<ActionType.LOGOUT, null>
-  | Action<ActionType.SAVE_ITEM, Cart>
-  | Action<ActionType.UPDATE_ITEM, Cart>
-  | Action<ActionType.DELETE_ITEM, number>;
+  | Action<ActionType.LOGOUT, Session>
+  | Action<ActionType.SAVE_ITEM, Cart[]>
+  | Action<ActionType.DELETE_ITEM, Cart[]>;
+
+const setStorage = (session: Session) => {
+  if (session.loginUser === null) {
+    localStorage.setItem(LOGOUT_CART, JSON.stringify(session.cart));
+    return;
+  }
+  localStorage.setItem(session.loginUser.name, JSON.stringify(session));
+  return;
+};
+
+const getStorage = (login?: LoginUser) => {
+  if (!login) {
+    const resStr = localStorage.getItem(LOGOUT_CART);
+    return resStr ? JSON.parse(resStr) : [];
+  }
+  const resStr = localStorage.getItem(login.name);
+  return resStr ? JSON.parse(resStr) : null;
+};
 
 const reducer = (
   session: Session,
@@ -43,100 +60,59 @@ const reducer = (
 ): Session => {
   switch (type) {
     case ActionType.LOGIN:
-      if (payload && payload.loginUser) {
-        const { name } = payload.loginUser;
-        const user = localStorage.getItem(name);
-        user ?? localStorage.setItem(name, JSON.stringify(payload));
-        return { ...payload, cart: user ? JSON.parse(user).cart : [] };
-      }
-      break;
     case ActionType.LOGOUT:
-      return {
-        loginUser: null,
-        cart: JSON.parse(localStorage.getItem(LOGOUT_CART) ?? '[]'),
-      };
+      return payload ? payload : session;
     case ActionType.SAVE_ITEM:
-      if (payload) {
-        const { id, name, price } = payload;
-        const newCart = [...session.cart, { id, name, price }];
-        session.loginUser
-          ? localStorage.setItem(
-              session.loginUser.name,
-              JSON.stringify({ ...session, cart: newCart })
-            )
-          : localStorage.setItem(LOGOUT_CART, JSON.stringify(newCart));
-
-        return {
-          ...session,
-          cart: newCart,
-        };
-      }
-      break;
-    case ActionType.UPDATE_ITEM:
-      if (payload) {
-        const item = session.cart.find((item) => item.id === payload.id);
-        if (item) {
-          item.name = payload.name;
-          item.price = payload.price;
-        }
-        if (session.loginUser) {
-          localStorage.setItem(session.loginUser.name, JSON.stringify(session));
-        } else {
-          localStorage.setItem(LOGOUT_CART, JSON.stringify(session.cart));
-        }
-        return session;
-      }
-      break;
     case ActionType.DELETE_ITEM:
-      if (payload) {
-        const filterCart = session.cart.filter((item) => item.id !== payload);
-        if (session.loginUser) {
-          localStorage.setItem(
-            session.loginUser.name,
-            JSON.stringify({ ...session, cart: filterCart })
-          );
-        } else {
-          localStorage.setItem(LOGOUT_CART, JSON.stringify(filterCart));
-        }
-        return {
-          ...session,
-          cart: filterCart,
-        };
-      }
-      break;
+      return { ...session, cart: payload ? payload : session.cart };
   }
-  return session;
 };
 
 const SessionProvider = ({ children }: PropsWithChildren) => {
   const [session, dispatch] = useReducer(reducer, {
     loginUser: null,
-    cart: JSON.parse(localStorage.getItem(LOGOUT_CART) ?? '[]'),
+    cart: getStorage(),
   });
 
-  const login = ({ id, name }: LoginUser) =>
+  const login = ({ id, name }: LoginUser) => {
+    const localSession: Session = getStorage({ id, name });
+    const newSession = localSession ?? { ...session, loginUser: { id, name } };
+    localSession ?? setStorage(newSession);
     dispatch({
       type: ActionType.LOGIN,
-      payload: { ...session, loginUser: { id, name } },
+      payload: newSession,
     });
+  };
 
   const logout = () =>
     dispatch({
       type: ActionType.LOGOUT,
-      payload: null,
+      payload: {
+        loginUser: null,
+        cart: getStorage(),
+      },
     });
 
   const saveCartItem = ({ id, name, price }: Cart) => {
+    const { cart } = session;
     if (id) {
-      dispatch({ type: ActionType.UPDATE_ITEM, payload: { id, name, price } });
+      const item = cart.find((item) => item.id === id);
+      if (item) {
+        item.name = name;
+        item.price = price;
+      }
     } else {
       id = Math.max(...session.cart.map((item) => item.id), 0) + 1;
-      dispatch({ type: ActionType.SAVE_ITEM, payload: { id, name, price } });
+      cart.push({ id, name, price });
     }
+    setStorage({ ...session, cart: cart });
+    dispatch({ type: ActionType.SAVE_ITEM, payload: cart });
   };
 
   const deleteCartItem = (id: number) => {
-    dispatch({ type: ActionType.DELETE_ITEM, payload: id });
+    const filterCart = session.cart.filter((item) => item.id !== id);
+    setStorage({ ...session, cart: filterCart });
+    dispatch({ type: ActionType.DELETE_ITEM, payload: filterCart });
   };
 
   return (
