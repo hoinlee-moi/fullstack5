@@ -1,24 +1,32 @@
-// src/App.tsx
-import Hello from './components/Hello';
+import { Route, Routes } from 'react-router-dom';
+import { SessionProvider } from './hooks/session-context';
+import { Home } from './components/Home';
+import { Nav } from './components/Nav';
 import My from './components/My';
-import './App.css';
-import { useCounter } from './hooks/counter-context';
-import Timer from './components/Timer';
-import { useCallback } from 'react';
+import { Items } from './components/Items';
+import Hello from './components/Hello';
+import Login from './components/Login';
+import { Error } from './components/Error';
+import { Item } from './components/Item';
 
 function App() {
-  const { count, plusCount, minusCount } = useCounter();
-  const fn = useCallback(() => 'FN!', []);
-
   return (
-    <>
-      <Timer />
-      <My />
-      <h2>count : {count}</h2>
-      <button onClick={plusCount}>count + 1</button>
-      <button onClick={minusCount}>count - 1</button>
-      <Hello name='홍길동' age={32} fn={fn} />
-    </>
+    <SessionProvider>
+      <Nav />
+      <Routes>
+        <Route path='/*' element={<Error />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/my' element={<My />} />
+        <Route path='/items'>
+          <Route index element={<Items />} />
+          <Route path=':id' element={<Item />} />
+        </Route>
+        {/* <Route path='/items' element={<Items />} />
+        <Route path='/item/:id' element={<Item />} /> */}
+        <Route path='/hello' element={<Hello />} />
+      </Routes>
+    </SessionProvider>
   );
 }
 

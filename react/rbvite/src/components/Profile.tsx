@@ -10,8 +10,10 @@ const Profile = () => {
 
   return (
     <>
-      <div>User Name: {loginUser?.name}</div>
-      <button onClick={logout}>Logout</button>
+      <div>
+        <p>User Name: {loginUser?.name}</p>
+        <button onClick={logout}>Logout</button>
+      </div>
     </>
   );
 };

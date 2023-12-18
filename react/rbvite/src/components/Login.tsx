@@ -1,16 +1,20 @@
 // src/components/Login.tsx
-import { FormEvent, memo, useEffect, useRef } from 'react';
-import { useCounter } from '../hooks/counter-context';
+import { FormEvent, useEffect, useRef } from 'react';
+import { useSession } from '../hooks/session-context';
+import { useNavigate } from 'react-router-dom';
 
-type Props = {
-  loginFn: ({ id, name }: LoginUser) => void;
-};
-
-const Login = ({ loginFn }: Props) => {
-  console.log('render!!');
-  const { plusCount, minusCount } = useCounter();
+const Login = () => {
+  const {
+    session: { loginUser },
+    login,
+  } = useSession();
+  const navigate = useNavigate();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (loginUser) navigate('/my');
+  }, [loginUser]);
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ const Login = ({ loginFn }: Props) => {
       alert('이름을 정확히 입력해주세요!');
       return nameFocus();
     }
-    loginFn({ id: Number(id), name });
+    login({ id: Number(id), name });
   };
 
   const nameFocus = () => {
@@ -35,14 +39,6 @@ const Login = ({ loginFn }: Props) => {
   };
 
   // useImperativeHandle(ref, () => ({ nameFocus }));
-
-  useEffect(() => {
-    nameFocus();
-    plusCount();
-    return () => {
-      minusCount();
-    };
-  }, []);
 
   return (
     <form onSubmit={submit}>
@@ -56,4 +52,4 @@ const Login = ({ loginFn }: Props) => {
     </form>
   );
 };
-export default memo(Login);
+export default Login;
