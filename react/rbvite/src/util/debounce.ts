@@ -7,6 +7,6 @@ export const debounce = <T extends unknown[], U>(
 
   return (...args: T) => {
     if (timer) clearTimeout(timer);
-    setTimeout(cb, delay, ...args);
+    timer = setTimeout(cb, delay, ...args);
   };
 };

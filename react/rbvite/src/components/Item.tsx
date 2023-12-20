@@ -1,35 +1,57 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useSession } from '../hooks/session-context';
-// import { useEffect } from 'react';
+import './ItemLayout.css';
+import SaveCartItemForm from './SaveCartItemFrom';
+import clsx from 'clsx';
 
 export const Item = () => {
-  const { id } = useParams<{ id: string }>();
-  const { state } = useLocation();
-  const {
-    session: { cart },
-  } = useSession();
+  const navigate = useNavigate();
+  const { currItem, deleteCartItem } = useOutletContext<OutletContext>();
 
-  const [item, setItem] = useState<Cart>();
+  const [modify, setModify] = useState(false);
+  const [addCartState, setAddCartState] = useState(false);
+
+  const cancleAddCart = () => setAddCartState(false);
+  const startAddCart = () => setAddCartState(true);
+  const startModify = () => setModify(true);
+  const cancelModify = () => setModify(false);
+
+  const deleteItem = () => {
+    deleteCartItem(currItem.id);
+    navigate('/items');
+  };
+
   useEffect(() => {
-    if (state) {
-      const { name, price } = state;
-      setItem({ id: Number(id), name, price });
-    } else {
-      setItem(cart.find((item) => item.id === Number(id)));
+    if (!currItem) {
+      navigate('/items');
     }
-  }, []);
-
-  // const cancleModify = () => navigate('/items');
+  }, [currItem]);
 
   return (
     <div>
-      <h2>{item?.name}</h2>
-      <p>{item?.price.toLocaleString()}</p>
-      {/* <SaveCartItemForm
-        modifyItem={{ id: Number(id), name, price }}
-        completeModify={cancleModify}
-      /> */}
+      {addCartState ? (
+        <SaveCartItemForm modifyItem={null} completeModify={cancleAddCart} />
+      ) : (
+        <div>
+          {modify ? (
+            <SaveCartItemForm
+              modifyItem={currItem}
+              completeModify={cancelModify}
+            />
+          ) : (
+            <div className={clsx('detailItem')}>
+              <div>
+                <h2>name : {currItem?.name}</h2>
+                <p>price : {currItem?.price.toLocaleString()}</p>
+              </div>
+
+              <button onClick={startModify}>수정하기</button>
+              <button onClick={startAddCart}>추가하기</button>
+              <button onClick={deleteItem}>삭제하기</button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

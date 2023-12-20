@@ -3,12 +3,12 @@ import { SessionProvider } from './hooks/session-context';
 import { Home } from './components/Home';
 import { Nav } from './components/Nav';
 import My from './components/My';
-// import { Items } from './components/Items';
 import Hello from './components/Hello';
 import Login from './components/Login';
 import { Error } from './components/Error';
 import { Item } from './components/Item';
 import { ItemLayout } from './components/ItemLayout';
+import { Items } from './components/Items';
 
 function App() {
   return (
@@ -20,8 +20,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/my' element={<My />} />
         <Route path='/items' element={<ItemLayout />}>
-          {/* <Route index element={<Items />} /> */}
-          <Route path=':id' element={<Item />} />
+          <Route index element={<Items />} />
+          <Route path='detail' element={<Item />} />
         </Route>
         {/* <Route path='/items' element={<Items />} />
         <Route path='/item/:id' element={<Item />} /> */}

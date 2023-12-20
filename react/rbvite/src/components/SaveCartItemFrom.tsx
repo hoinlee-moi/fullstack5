@@ -3,7 +3,7 @@ import { useSession } from '../hooks/session-context';
 
 type Props = {
   modifyItem: Cart | null;
-  completeModify: () => void;
+  completeModify?: () => void;
 };
 
 const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
@@ -37,7 +37,7 @@ const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
       const name = itemNameRef.current.value;
       const price = itemPriceRef.current.value;
       saveCartItem({ id, name, price: Number(price) });
-      completeModify();
+      completeModify && completeModify();
     }
   };
 
@@ -60,7 +60,6 @@ const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
   };
 
   const descriptionStr = modifyItem ? '수정' : '추가';
-
   return (
     <form onSubmit={submitHandle}>
       <div>
@@ -82,7 +81,9 @@ const SaveCartItemForm = ({ modifyItem, completeModify }: Props) => {
         />
       </div>
       {isDirty && <button type='submit'>{descriptionStr}</button>}
-      {modifyItem && <button onClick={completeModify}>취소</button>}
+      <button type='button' onClick={completeModify}>
+        취소
+      </button>
     </form>
   );
 };

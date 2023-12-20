@@ -2,3 +2,19 @@
   display: flex;
   justify-content: space-around;
 }
+
+.item {
+  background-color: transparent;
+  transition: none;
+}
+.item:hover {
+  border: none;
+}
+.itme:focus,
+.item:focus-visible {
+  outline: none;
+}
+
+.detailItem button {
+  margin-right: 10px;
+}

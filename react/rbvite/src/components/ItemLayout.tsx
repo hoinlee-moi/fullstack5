@@ -1,48 +1,64 @@
-import { Link, Outlet } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { useSession } from '../hooks/session-context';
 import './ItemLayout.css';
 import clsx from 'clsx';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { debounce } from '../util/debounce';
 import { initSearch } from '../util/initSearch';
-import SaveCartItemForm from './SaveCartItemFrom';
 
 export const ItemLayout = () => {
   const {
     session: { cart },
     deleteCartItem,
   } = useSession();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParam] = useSearchParams();
 
-  const [modify, setModify] = useState<Cart | null>(null);
-
-  const successModify = () => setModify(null);
-
-  const onModifyState = (id: number) =>
-    setModify(cart.find((item) => item.id === id) || null);
-
-  const [search, setSearch] = useState<Cart[]>();
-  const searchCart = debounce((e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const searchItem = initSearch(cart, value);
-    setSearch(searchItem);
-  }, 1000);
-
+  const searchCart = () => initSearch(cart, searchParams.get('search') || '');
+  const searchHandler = debounce(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      setSearchParam({ search: e.target.value }),
+    500
+  );
+  const [currItem, setCurrItem] = useState<Cart | null>();
+  const detailItemNav = (item: Cart) => {
+    setCurrItem(item);
+    navigate(`./detail`);
+  };
+  useEffect(() => {
+    if (pathname === '/items') setCurrItem(null);
+  }, [pathname]);
   return (
     <>
-      <input type='search' className={clsx('search')} onChange={searchCart} />
+      Search :{' '}
+      <input
+        type='search'
+        className={clsx('search')}
+        defaultValue={''}
+        onChange={searchHandler}
+      />
       <ul>
-        {(search ? search : cart).map(({ id, name, price }) => (
-          <li key={id}>
-            <Link to={`/items/${id}`} state={{ name, price }}>
-              {name}({price})
-            </Link>
-            <button onClick={() => onModifyState(id)}>수정</button>
-            <button onClick={() => deleteCartItem(id)}>삭제</button>
+        {searchCart().map((item) => (
+          <li key={item.id}>
+            <button
+              onClick={() => detailItemNav(item)}
+              className={clsx('item')}
+            >
+              {item.name}({item.price})
+            </button>
+            <button onClick={() => setCurrItem(item)}>수정</button>
+            <button onClick={() => deleteCartItem(item.id)}>삭제</button>
           </li>
         ))}
       </ul>
-      <SaveCartItemForm modifyItem={modify} completeModify={successModify} />
-      <Outlet />
+      <Outlet context={{ currItem, deleteCartItem }} />
+      {/* <SaveCartItemForm modifyItem={modify} completeModify={successModify} /> */}
     </>
   );
 };
