@@ -14,7 +14,6 @@ export const ItemLayout = () => {
   } = useSession();
   const [searchParams, setSearchParam] = useSearchParams();
   const searchStr = searchParams.get('search');
-
   const [items, setItems] = useState<Cart[]>([]);
   const [currItem, setCurrItem] = useState<Cart | null>();
 
