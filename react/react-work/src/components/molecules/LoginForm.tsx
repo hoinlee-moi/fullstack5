@@ -1,32 +1,33 @@
 import { FormEvent, useRef } from 'react';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
+import CheckBox from '../atoms/CheckBox';
+import Label from '../atoms/Label';
 
 const LoginForm = () => {
   const idInputRef = useRef<HTMLInputElement>(null);
-  const psInputRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const alCheckBoxRef = useRef<HTMLInputElement>(null);
 
   const loginSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const id = idInputRef.current?.value ?? '';
-    const ps = psInputRef.current?.value ?? '';
+    const name = nameInputRef.current?.value ?? '';
     if (id === '') return alert('please enter ID');
 
-    if (ps === '') return alert('please enter password');
-    // login({id,ps})
+    if (name === '') return alert('please enter password');
+    // login({id,name})
   };
   return (
     <form onSubmit={loginSubmit} className='text-center'>
-      <div className='grid grid-rows-2 gap-y-4'>
-        <Input
-          type='text'
-          className='w-80'
-          placeholder='Enter Id...'
-          ref={idInputRef}
-        />
-        <Input type='number' placeholder='Enter password...' ref={psInputRef} />
+      <div className='grid grid-rows-2 gap-y-4 w-80'>
+        <Input type='number' placeholder='ENTER ID...' ref={idInputRef} />
+        <Input type='text' placeholder='ENTER NAME...' ref={nameInputRef} />
       </div>
-      <Button type='submit' className='mt-2 ' detail='Login' />
+      <div className='mt-2'>
+        <CheckBox className='ml-2' ref={alCheckBoxRef} content='AutoLogin' />
+      </div>
+      <Button type='submit' className='mt-1 ' detail='Login' />
     </form>
   );
 };
