@@ -2,12 +2,12 @@ import clsx from 'clsx';
 import { memo } from 'react';
 
 type Props = {
-  children: string;
+  detail: string;
   type?: string;
   onClick?: () => void;
   className?: string;
 };
-const customButton = ({ children, className, onClick = () => {} }: Props) => {
+const customButton = ({ detail, className, onClick = () => {} }: Props) => {
   return (
     <button
       onClick={onClick}
@@ -16,7 +16,7 @@ const customButton = ({ children, className, onClick = () => {} }: Props) => {
         className
       )}
     >
-      {children}
+      {detail}
     </button>
   );
 };

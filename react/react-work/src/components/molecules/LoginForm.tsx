@@ -26,9 +26,7 @@ const LoginForm = () => {
         />
         <Input type='number' placeholder='Enter password...' ref={psInputRef} />
       </div>
-      <Button type='submit' className='mt-2 '>
-        Login
-      </Button>
+      <Button type='submit' className='mt-2 ' detail='Login' />
     </form>
   );
 };

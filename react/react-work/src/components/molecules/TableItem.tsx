@@ -1,28 +1,25 @@
+import { Link } from 'react-router-dom';
+import Button from '../atoms/Button';
 import TableData from '../atoms/TableData';
 
-const TableItem = () => {
+type Props = {
+  item: CartItem;
+};
+
+const TableItem = ({ item: { id, name, price, description } }: Props) => {
   return (
-    <tr className='text-sm sm:text-base text-gray-600 text-center'>
+    <tr className='text-sm sm:text-base text-gray-600 text-center' key={id}>
+      <Link to={`/shop?id=${id}`}>
+        <TableData content={name} />
+      </Link>
+
+      <TableData content={'' + price} />
       <TableData
-        className={
-          'font-primary font-medium px-4 sm:px-6 py-4 flex items-center'
-        }
-        detail='상품이름'
+        className='text-base font-light hidden sm:table-cell'
+        content={description}
       />
 
-      <TableData
-        className='font-primary font-medium px-4 sm:px-6 py-4'
-        detail='가격'
-      />
-      <TableData
-        className='font-primary text-base font-light px-4 sm:px-6 py-4 hidden sm:table-cell'
-        detail='설명'
-      />
-
-      <TableData
-        className='font-primary font-medium px-4 sm:px-6 py-4'
-        detail='삭제'
-      />
+      <Button detail='삭제' className='text-red-500 hover:text-neutral-700' />
     </tr>
   );
 };
