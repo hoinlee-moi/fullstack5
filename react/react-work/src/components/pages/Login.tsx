@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../molecules/LoginForm';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useSession } from '../../hooks/session-context';
 
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
   } = useSession();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user) navigate('/profile');
   }, []);
   return (

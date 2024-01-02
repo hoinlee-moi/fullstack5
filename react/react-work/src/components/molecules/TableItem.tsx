@@ -10,6 +10,7 @@ type Props = {
 const TableItem = ({ item: { id, name, price, description } }: Props) => {
   const { saveOrEditCart, deleteCart } = useSession();
   const { pathname } = useLocation();
+  const shopOrCart = pathname === '/shop';
   const deleteHandle = () => deleteCart(id);
 
   const cartAddHandle = () => {
@@ -19,7 +20,11 @@ const TableItem = ({ item: { id, name, price, description } }: Props) => {
 
   return (
     <tr className='text-sm sm:text-base text-gray-600 text-center'>
-      <TableData content={<Link to={`/shop?id=${id}`}>{name}</Link>} />
+      <TableData
+        content={
+          <Link to={`/${shopOrCart ? 'shop' : 'cart'}?id=${id}`}>{name}</Link>
+        }
+      />
 
       <TableData content={'' + price} />
       <TableData
@@ -29,9 +34,9 @@ const TableItem = ({ item: { id, name, price, description } }: Props) => {
       <TableData
         content={
           <Button
-            detail={pathname === '/shop' ? '추가' : '삭제'}
+            detail={shopOrCart ? '추가' : '삭제'}
             className='text-red-500 px-0 py-0  hover:text-neutral-700'
-            onClick={pathname === '/shop' ? cartAddHandle : deleteHandle}
+            onClick={shopOrCart ? cartAddHandle : deleteHandle}
           />
         }
       />

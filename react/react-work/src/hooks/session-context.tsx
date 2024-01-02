@@ -68,17 +68,20 @@ const reducer = (session: Session, { type, payload }: Action) => {
 
 const SessionContextProvieder = ({ children }: PropsWithChildren) => {
   const [session, dispatch] = useReducer(reducer, {
-    user: { id: 0, name: '' },
-    cart: [],
+    user: null,
+    cart: getLogoutCartStorage(),
   });
 
   useEffect(() => {
     const autoLoginUser = getAutoLoginStorage();
-    if (autoLoginUser)
-      dispatch({
-        type: ACTION_TYPE.SET_SESSION,
-        payload: autoLoginUser,
-      });
+    if (autoLoginUser) {
+      const user = getUserStorage(autoLoginUser.id);
+      if (user)
+        dispatch({
+          type: ACTION_TYPE.SET_SESSION,
+          payload: user,
+        });
+    }
   }, []);
 
   const login = ({ id, name, auto }: AutoLoginFn) => {
@@ -88,7 +91,7 @@ const SessionContextProvieder = ({ children }: PropsWithChildren) => {
     };
     dispatch({ type: ACTION_TYPE.LOGIN, payload: loginUser });
 
-    if (auto) setAutoLoginStorage(loginUser);
+    if (auto) setAutoLoginStorage(loginUser.user);
   };
 
   const logout = () => {

@@ -3,7 +3,7 @@ import ItemsTable from '../organisms/ItemsTable';
 
 const ListAndDetail = () => {
   return (
-    <div className='w-full h-full flex items-center '>
+    <div className='w-full h-full flex '>
       <section className='w-2/4 h-full p-5'>
         <ItemsTable />
       </section>

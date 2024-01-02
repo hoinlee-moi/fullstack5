@@ -1,11 +1,11 @@
 const AUTOLOGIN = 'autoLogin';
 const LOGOUTCART = 'logoutCart';
 
-export const getAutoLoginStorage = (): Session | null => {
+export const getAutoLoginStorage = (): User | null => {
   const autoLogin = localStorage.getItem(AUTOLOGIN) ?? 'null';
   return JSON.parse(autoLogin);
 };
-export const setAutoLoginStorage = (user: Session | null) =>
+export const setAutoLoginStorage = (user: User | null) =>
   localStorage.setItem(AUTOLOGIN, JSON.stringify(user));
 
 export const getUserStorage = (id: number): Session | undefined => {
