@@ -1,15 +1,9 @@
-import ItemDetail from '../organisms/ItemDetail';
-import ItemTable from '../organisms/ItemsTable';
+import ListAndDetail from '../templates/ListAndDetail';
 
 const Shop = () => {
   return (
-    <div className='w-full h-full flex items-center '>
-      <section className='w-2/4 h-full p-5'>
-        <ItemTable />
-      </section>
-      <section className='w-2/4 p-5'>
-        <ItemDetail />
-      </section>
+    <div className='flex flex-col items-center min-h-[calc(100vh-3.5rem)]'>
+      <ListAndDetail />
     </div>
   );
 };

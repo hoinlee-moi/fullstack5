@@ -6,18 +6,21 @@ import Cart from './components/pages/Cart';
 import Navbar from './components/organisms/Navbar';
 import Shop from './components/pages/Shop';
 import './App.css';
+import { SessionContextProvieder } from './hooks/session-context';
 
 function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/shop' element={<Shop />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/cart' element={<Cart />} />
-      </Routes>
+      <SessionContextProvieder>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/shop' element={<Shop />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/cart' element={<Cart />} />
+        </Routes>
+      </SessionContextProvieder>
     </>
   );
 }

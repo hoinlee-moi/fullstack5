@@ -4,7 +4,7 @@ const ItemDetail = () => {
   return (
     <article>
       <div>
-        <Label content='상품 이름 :' />
+        <Label content='상품 이름' />
       </div>
       <div>
         <Label content='상품 가격 :' />

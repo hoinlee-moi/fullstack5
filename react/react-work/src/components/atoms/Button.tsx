@@ -12,7 +12,7 @@ const customButton = ({ detail, className, onClick = () => {} }: Props) => {
     <button
       onClick={onClick}
       className={clsx(
-        'px-6 py-2 bg-white font-bold text-xl hover:text-blue-600/100',
+        'px-6 py-2 bg-white font-bold text-base hover:text-blue-600/100',
         className
       )}
     >

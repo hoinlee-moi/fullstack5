@@ -1,7 +1,24 @@
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { DUMMYITMES } from '../../DUMMY/dummyItem';
-import TableItem from '../molecules/TableItem';
+import { useSession } from '../../hooks/session-context';
+import TableItem from './../molecules/TableItem';
 
 const ItemsTable = () => {
+  const {
+    session: { cart },
+  } = useSession();
+  const [list, setList] = useState<CartItem[]>([]);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname === '/cart') {
+      setList(cart);
+    } else {
+      //SOHP리스트로 바꿀예정
+      setList(DUMMYITMES);
+    }
+  }, [pathname, cart]);
   return (
     <table className='mx-auto'>
       <thead>
@@ -15,7 +32,7 @@ const ItemsTable = () => {
         </tr>
       </thead>
       <tbody className='divide-y divide-palette-lighter'>
-        {DUMMYITMES.map((item) => (
+        {list.map((item) => (
           <TableItem item={item} key={item.id} />
         ))}
       </tbody>

@@ -1,8 +1,9 @@
 import clsx from 'clsx';
+import { ReactNode } from 'react';
 
 type Props = {
   className?: string;
-  content: string;
+  content: string | ReactNode;
 };
 
 const TableData = ({ className, content }: Props) => {

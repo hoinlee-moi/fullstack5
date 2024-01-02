@@ -1,5 +1,11 @@
+import ListAndDetail from '../templates/ListAndDetail';
+
 const Cart = () => {
-  return <h1>여기는 cart</h1>;
+  return (
+    <div className='flex flex-col items-center min-h-[calc(100vh-3.5rem)]'>
+      <ListAndDetail />
+    </div>
+  );
 };
 
 export default Cart;
