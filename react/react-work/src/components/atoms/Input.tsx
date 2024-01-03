@@ -2,12 +2,13 @@ import clsx from 'clsx';
 import { ForwardedRef, forwardRef, memo } from 'react';
 type Props = {
   type: string;
+  onChange?: VoidFn;
   placeholder?: string;
-  className?: string;
+  classNames?: string;
 };
 const customInput = forwardRef(
   (
-    { type, placeholder, className }: Props,
+    { type, placeholder, classNames, onChange }: Props,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -16,9 +17,10 @@ const customInput = forwardRef(
         ref={ref}
         placeholder={placeholder}
         className={clsx(
-          'p-2 bg-slate-50 outline-blue-500/50 focus:shadow-3xr rounded',
-          className
+          'p-1 bg-slate-100 outline-blue-500/50 focus:shadow-3xr rounded',
+          classNames
         )}
+        onChange={onChange}
       />
     );
   }

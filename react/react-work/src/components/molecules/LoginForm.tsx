@@ -27,8 +27,18 @@ const LoginForm = () => {
   return (
     <form onSubmit={loginSubmit} className='text-center'>
       <div className='grid grid-rows-2 gap-y-4 w-80'>
-        <Input type='number' placeholder='ENTER ID...' ref={idInputRef} />
-        <Input type='text' placeholder='ENTER NAME...' ref={nameInputRef} />
+        <Input
+          type='number'
+          placeholder='ENTER ID...'
+          ref={idInputRef}
+          classNames='p-2'
+        />
+        <Input
+          type='text'
+          placeholder='ENTER NAME...'
+          ref={nameInputRef}
+          classNames='p-2'
+        />
       </div>
       <div className='mt-2'>
         <CheckBox classNames='ml-2' ref={alCheckBoxRef} content='AutoLogin' />

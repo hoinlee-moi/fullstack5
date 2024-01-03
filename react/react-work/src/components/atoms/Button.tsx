@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { memo } from 'react';
+import { ReactNode, memo } from 'react';
 
 type Props = {
-  detail: string;
+  detail: string | ReactNode;
   type?: string;
   onClick?: () => void;
   className?: string;
