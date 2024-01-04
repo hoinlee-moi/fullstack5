@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -16,7 +17,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <header className='h-16 mb-3 text-lg flex justify-evenly items-center border-b border-solid border-black'>
+          <Link href={'/about'}>about</Link>
+          {/* <Link href={'/myroutes'}>myroutes</Link> */}
+          <Link href={'/hello'}>hello</Link>
+          {/* <Link href={'/myroutes/morning'}>morning</Link>
+          <Link href={'/myroutes/afternoon'}>afternoon</Link>
+          <Link href={'/myroutes/evening'}>evening</Link> */}
+        </header>
+        {children}
+        <footer className='h-8 p-2 mt-3 flex items-center justify-center text-lg border-t border-solid border-black'>
+          <p>made by moi_lee</p>
+        </footer>
+      </body>
     </html>
   );
 }
