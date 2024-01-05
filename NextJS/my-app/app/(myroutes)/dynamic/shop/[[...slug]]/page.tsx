@@ -4,6 +4,7 @@ export type Post = {
   title: string;
   body: string;
 };
+
 // export const dynamicParams = true
 // export async function generateStaticParams() {
 //   const res = await fetch(
