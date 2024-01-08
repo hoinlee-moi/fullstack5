@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const time = ['morning', 'afternoon', 'evening'];
 
-export default function MyroutesLayout({
+export default function HelloLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -22,6 +22,8 @@ export default function RootLayout({
           <Link href={'/about'}>about</Link>
           <Link href={'/hello'}>hello</Link>
           <Link href={'/dynamic'}>dynamic</Link>
+          <Link href={'/paralell'}>paralell</Link>
+          <Link href={'/intercept'}>intercept</Link>
         </header>
         {children}
         <footer className='h-8 p-2 mt-3 flex items-center justify-center text-lg border-t border-solid border-black'>
