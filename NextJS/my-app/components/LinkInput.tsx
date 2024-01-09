@@ -1,15 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useRef } from 'react';
+import { FormEvent, useRef } from 'react';
 
 export default function LinkInput() {
   const router = useRouter();
   const idInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    console.log('strict!!!!');
-  }, []);
 
   const linkPushRouter = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

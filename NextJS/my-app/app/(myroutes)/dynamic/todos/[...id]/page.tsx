@@ -1,4 +1,4 @@
-import TodosIdDetecter from '@/app/ui/TodosIdDetecter';
+import TodosIdDetecter from '@/components/TodosIdDetecter';
 
 export interface Todo {
   userId: number;
@@ -34,7 +34,6 @@ export default async function Id({
     }
   };
   const todos: Todo[] = await getTodo();
-  console.log(todos);
   // console.log('render!!!>>>>>', id);
   return (
     <div>

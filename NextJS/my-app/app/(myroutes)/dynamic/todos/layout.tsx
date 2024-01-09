@@ -1,4 +1,4 @@
-import LinkInput from '@/app/ui/LinkInput';
+import LinkInput from '@/components/LinkInput';
 
 export default function TodosLayout({
   children,
