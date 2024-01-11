@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Inter } from 'next/font/google';
+import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const noto = Noto_Sans_KR({ subsets: ['latin'], variable: '--noto--font' });
+// const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
+      <body className={noto.className}>
         <header className='h-16 mb-3 text-lg flex justify-evenly items-center border-b border-solid border-black'>
           <Link href={'/about'}>about</Link>
           <Link href={'/hello'}>hello</Link>
