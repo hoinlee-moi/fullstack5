@@ -26,6 +26,7 @@ export default function RootLayout({
           <Link href={'/paralell'}>paralell</Link>
           <Link href={'/intercept'}>intercept</Link>
           <Link href={'/photos'}>photos</Link>
+          <Link href={'/sample'}>sample</Link>
         </header>
         {children}
         <footer className='h-8 p-2 mt-3 flex items-center justify-center text-lg border-t border-solid border-black'>

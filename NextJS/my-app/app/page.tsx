@@ -2,5 +2,10 @@
 // import Link from 'next/link';
 
 export default function Home() {
-  return <div></div>;
+  return (
+    <div>
+      <h2>This is Home</h2>
+      <button>BTN</button>
+    </div>
+  );
 }
