@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import Modal from '../organisms/Modal';
+import FileDown from '../organisms/FileDown';
 
 const Home = () => {
   const modalRef = useRef<HTMLDialogElement>(null);
@@ -12,6 +13,7 @@ const Home = () => {
       <button className='mt-3 p-2' onClick={modalOpen}>
         Modal open
       </button>
+      <FileDown />
       <Modal ref={modalRef} />
     </div>
   );
